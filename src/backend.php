@@ -1,4 +1,22 @@
 <?php
+$DBservername = "127.0.0.1";
+$DBusername = "material";
+$DBpassword = "material";
+$DBname = "material";
+
+try {
+    $conn = new PDO("mysql:host=$DBservername;dbname=$DBname", $DBusername, $DBpassword);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    #echo "Connected successfully";
+} catch(PDOException $e) {
+    #echo "Connection failed: " . $e->getMessage();
+    $response = [
+        "status" => "Fail",
+        "errorMessage" => "Unable to connect to database: " . $e->getMessage(),
+    ];
+    echo json_encode($response);
+}
 
 // actions:
 
@@ -45,8 +63,6 @@ if ($action === "login")
             "errorMessage" => "Username or password incorrect"
         ];
     }
-
-
 }
 
 if ($action === "register")
@@ -54,7 +70,7 @@ if ($action === "register")
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
 }
-
+#$conn = null; # close DB connection
 echo json_encode($response);
 // $q = $_REQUEST["query"];
 // $test = $_REQUEST["test"];

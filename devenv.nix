@@ -2,6 +2,7 @@
 let
   dbUser = "material";
   dbPassword = "material";
+  dbName = "material";
 in
 {
   # https://devenv.sh/basics/
@@ -69,6 +70,9 @@ in
     };
     mysql = {
       enable = true;
+      initialDatabases = [
+        { name = dbName; }
+      ];
       ensureUsers = [ {
         name = dbUser;
         password = dbPassword;
