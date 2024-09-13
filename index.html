@@ -17,8 +17,10 @@
     <input type="submit" value="Submit">
     </form>
 
-    <p id="demo"> test </p>
-
+    <div>
+      <p>Backend test data</p>
+      <p id="data">data</p>
+    </div>
   </body>
 
   <script>
@@ -26,7 +28,8 @@
   </script>
 
   <script>
-      fetch("src/backend.php?action=login&username=me&password=pwd")
+      //fetch("src/backend.php?action=login&username=me&password=pwd")
+      fetch("src/backend.php?action=getSampleData")
           .then((response) => {
               if(!response.ok){ // Before parsing (i.e. decoding) the JSON data,
                                 // check for any errors.
@@ -42,12 +45,11 @@
                // alert(data); // Will alert: 42
               //print(data)
               // document.write(data)
-              document.getElementById("demo").innerHTML = data.status;
-              // document.getElementById("authToken").innerHTML = data.authToken;
+              document.getElementById("data").innerHTML = data;
           })
           .catch((error) => {
                // This is where you handle errors.
-              alert("there was an error ")
+              alert("there was an error")
               throw new Error("Something went wrong!");
           });
 

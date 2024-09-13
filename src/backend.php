@@ -6,24 +6,24 @@
 //             #"authToken" => "hello world auth_token"
 //         ]);
 
-$DBservername = "127.0.0.1";
-$DBusername = "material";
-$DBpassword = "material";
-$DBname = "material";
-
-try {
-    $conn = new PDO("mysql:host=$DBservername;dbname=$DBname", $DBusername, $DBpassword);
-    // set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    #echo "Connected successfully";
-} catch(PDOException $e) {
-    #echo "Connection failed: " . $e->getMessage();
-    $response = [
-        "status" => "Fail",
-        "errorMessage" => "Unable to connect to database: " . $e->getMessage(),
-    ];
-    echo json_encode($response);
-}
+// $DBservername = "127.0.0.1";
+// $DBusername = "material";
+// $DBpassword = "material";
+// $DBname = "material";
+//
+// try {
+//     $conn = new PDO("mysql:host=$DBservername;dbname=$DBname", $DBusername, $DBpassword);
+//     // set the PDO error mode to exception
+//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//     #echo "Connected successfully";
+// } catch(PDOException $e) {
+//     #echo "Connection failed: " . $e->getMessage();
+//     $response = [
+//         "status" => "Fail",
+//         "errorMessage" => "Unable to connect to database: " . $e->getMessage(),
+//     ];
+//     echo json_encode($response);
+// }
 
 // actions:
 
@@ -37,14 +37,16 @@ try {
 //     }
 // }
 
-// eeee
 
 //
 // $userlist = [ new User("me", "test"), new User("1", "newtest") ]
 
 //$test = [ new User("Robert", "test") ];
 
-$userlist = [ "me" => "pwd"];
+$userlist = [
+    "me" => "pwd",
+    "test" => "test"
+];
 
 
 $action = $_REQUEST["action"];
@@ -54,15 +56,16 @@ if ($action === "login")
 {
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT); # , "PASSWORD_DEFAULT", []
+    #$passwordHash = password_hash($password, PASSWORD_DEFAULT); # , "PASSWORD_DEFAULT", []
     #$passwordHash = $userlist[$username];
 
-    if ($userlist[$username] === $password) {
+    #if ($userlist[$username] === $password) {
+    if (True) {
     ##if password_verify($password, $passwordHash)
         $response = [
             "status" => "Success",
-            "authToken" => $passwordHash
-            #"authToken" => "hello world auth_token"
+            #"authToken" => $passwordHash
+            "authToken" => "hello world auth_token"
         ];
     } else {
         $response = [
@@ -72,11 +75,20 @@ if ($action === "login")
     }
 }
 
-if ($action === "register")
+if ($action === "getSampleData")
 {
-    $username = $_REQUEST["username"];
-    $password = $_REQUEST["password"];
+    $response = [
+        "data1",
+        14,
+        "data3"
+    ];
 }
+
+// if ($action === "register")
+// {
+//     $username = $_REQUEST["username"];
+//     $password = $_REQUEST["password"];
+// }
 #$conn = null; # close DB connection
 
 echo json_encode($response);
