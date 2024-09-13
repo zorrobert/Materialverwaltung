@@ -26,8 +26,7 @@ in
   '';
 
   enterShell = ''
-    hello
-    git --version
+    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
   '';
 
   # https://devenv.sh/tests/
@@ -41,7 +40,7 @@ in
 
   # See full reference at https://devenv.sh/reference/options/
 
-  scripts.caddy-allow-port.exec = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
+  # scripts.caddy-allow-port.exec = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
 
   languages.php = {
     enable = true;
