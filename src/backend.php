@@ -1,4 +1,11 @@
 <?php
+
+// echo json_encode([
+//             "status" => "Success",
+//             #"authToken" => $passwordHash
+//             #"authToken" => "hello world auth_token"
+//         ]);
+
 $DBservername = "127.0.0.1";
 $DBusername = "material";
 $DBpassword = "material";
@@ -71,7 +78,11 @@ if ($action === "register")
     $password = $_REQUEST["password"];
 }
 #$conn = null; # close DB connection
+
 echo json_encode($response);
+
+
+
 // $q = $_REQUEST["query"];
 // $test = $_REQUEST["test"];
 // $answer = $q .  ' ' . $test;

@@ -1,31 +1,16 @@
-test
-<!-- snip -->
+<script>
+    // use real php backend
+    backend = "/src/backend.php"
+    // use test file that returns an example answer like it would come from the backend
+    //backend = "/src/test.json";
+</script>
 
-<!-- snip -->
-
-
-<p>this is html</p>
-
-<?php
-echo "<p>this is php</p>";
-
-
-?>
-
-
-
-
-<p id="demo">ee</p>
+<p id="demo">demo</p>
 
 <p id="authToken">ee</p>
 
-
 <script>
-document.getElementById("demo").innerHTML = "script1";
-</script>
-
-<script>
-    fetch("backend.php?action=login&username=me&password=pwd")
+    fetch(backend + "?action=login&username=me&password=pwd")
         .then((response) => {
             if(!response.ok){ // Before parsing (i.e. decoding) the JSON data,
                               // check for any errors.
@@ -40,7 +25,7 @@ document.getElementById("demo").innerHTML = "script1";
              // This is where you handle what to do with the response.
              // alert(data); // Will alert: 42
             //print(data)
-            // document.write(data)
+            //document.write(data)
             document.getElementById("demo").innerHTML = data.status;
             document.getElementById("authToken").innerHTML = data.authToken;
         })
@@ -51,3 +36,8 @@ document.getElementById("demo").innerHTML = "script1";
         });
 
 </script>
+
+e
+
+
+
