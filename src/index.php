@@ -24,7 +24,6 @@ echo "<p>this is php</p>";
 document.getElementById("demo").innerHTML = "script1";
 </script>
 
-
 <script>
     fetch("backend.php?action=login&username=me&password=pwd")
         .then((response) => {
