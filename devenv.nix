@@ -25,9 +25,7 @@ in
     echo hello from $GREET
   '';
 
-  enterShell = ''
-    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
-  '';
+  enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
 
   # https://devenv.sh/tests/
   enterTest = ''
