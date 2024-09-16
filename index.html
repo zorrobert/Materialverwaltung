@@ -5,56 +5,21 @@
     <title> Titel </title>
   </head>
   <body class="body">
+    
+    <table id="MaterialTabelle">
+      <thead id="">
+        Materialliste
+        <tr> 
+          <th>Material</th>
+          <th>Menge</th>
+          <th>  </th>
+        </tr>
+      </thead>
+    </table>
 
-    <!-- Überschrift der Login seite -->
-    <h1 class="Login"> Willkommen! </h1>
-
-    <form action="src/backend.php">
-    <label for="Username"> Benutzername: </label><br>
-    <input type="text" id="Username" name="Username"><br>
-    <label for="pwd">Password:</label><br>
-    <input type="password" id="pwd" name="pwd">
-    <input type="submit" value="Submit">
-    </form>
-
-    <div>
-      <p>Backend test data</p>
-      <p id="data">data</p>
-    </div>
   </body>
 
-  <script>
-  document.getElementById("demo").innerHTML = "script1";
-  </script>
 
-  <script>
-      //fetch("src/backend.php?action=login&username=me&password=pwd")
-      fetch("src/backend.php?action=getSampleData")
-          .then((response) => {
-              if(!response.ok){ // Before parsing (i.e. decoding) the JSON data,
-                                // check for any errors.
-                  // In case of an error, throw.
-                  throw new Error("Something went wrong!");
-              }
-
-              return response.json(); // Parse the JSON data.
-              //return response;
-          })
-          .then((data) => {
-               // This is where you handle what to do with the response.
-               // alert(data); // Will alert: 42
-              //print(data)
-              // document.write(data)
-              document.getElementById("data").innerHTML = data;
-          })
-          .catch((error) => {
-               // This is where you handle errors.
-              alert("there was an error")
-              throw new Error("Something went wrong!");
-          });
-
-          pushtest
-
-  </script>
+ 
 
 </html>
