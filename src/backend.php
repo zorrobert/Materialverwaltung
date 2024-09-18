@@ -1,53 +1,56 @@
 <?php
+require "Entity/User.php";
+#require "Entity/Item.php";
+use User;
+#use Item;
 
-// echo json_encode([
-//             "status" => "Success",
-//             #"authToken" => $passwordHash
-//             #"authToken" => "hello world auth_token"
-//         ]);
+$DBservername = "127.0.0.1";
+$DBusername = "material";
+$DBpassword = "material";
+$DBname = "material";
 
-// $DBservername = "127.0.0.1";
-// $DBusername = "material";
-// $DBpassword = "material";
-// $DBname = "material";
-//
-// try {
-//     $conn = new PDO("mysql:host=$DBservername;dbname=$DBname", $DBusername, $DBpassword);
-//     // set the PDO error mode to exception
-//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//     #echo "Connected successfully";
-// } catch(PDOException $e) {
-//     #echo "Connection failed: " . $e->getMessage();
-//     $response = [
-//         "status" => "Fail",
-//         "errorMessage" => "Unable to connect to database: " . $e->getMessage(),
-//     ];
-//     echo json_encode($response);
-// }
+try {
+    $conn = new PDO("mysql:host=$DBservername;dbname=$DBname", $DBusername, $DBpassword);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    #echo "Connected successfully";
 
-// actions:
+    // $sql = "SELECT id, username, password FROM Users WHERE username='$username'";
+    // $result = $conn->query($sql);
+    //
 
-// class User {
-//     public $username;
-//     public $password;
-//
-//     function __construct($username, $password) {
-//         $this->username = $username;
-//         $this->password = $password;
-//     }
-// }
+    // if ($result->num_rows > 0) {
+    //     while ($row = $result->fetch_assoc()) {
+    //         $test = $row["username"]
+    //     }
+    // }
+} catch(PDOException $e) {
+    #echo "Connection failed: " . $e->getMessage();
+    $response = [
+        "status" => "Fail",
+        "errorMessage" => "Unable to connect to database: " . $e->getMessage(),
+    ];
+    echo json_encode($response);
+}
 
+function checkLogin($conn, $username, $password) {
+    $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username='$username'");
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    return ($password === $result[0]["password"]);
+}
 
-//
-// $userlist = [ new User("me", "test"), new User("1", "newtest") ]
+function getAuthToken() {
+    return "Auth Token";
+        #$passwordHash = password_hash($password, PASSWORD_DEFAULT); # , "PASSWORD_DEFAULT", []
+    #$passwordHash = $userlist[$username];
+}
 
-//$test = [ new User("Robert", "test") ];
-
-$userlist = [
-    "me" => "pwd",
-    "test" => "test"
-];
-
+function listItems($conn) {
+    $username = $_REQUEST["sortBy"];
+    $password = $_REQUEST["entries"];
+    return True;
+}
 
 $action = $_REQUEST["action"];
 #$authToken = $_REQUEST["authToken"]; # generate from cookie
@@ -56,51 +59,22 @@ if ($action === "login")
 {
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
-    #$passwordHash = password_hash($password, PASSWORD_DEFAULT); # , "PASSWORD_DEFAULT", []
-    #$passwordHash = $userlist[$username];
-
-    #if ($userlist[$username] === $password) {
-    if (True) {
-    ##if password_verify($password, $passwordHash)
+    if (checkLogin($conn, $username, $password)) {
         $response = [
             "status" => "Success",
-            #"authToken" => $passwordHash
-            "authToken" => "hello world auth_token"
+            "errorMessage" => NULL,
+            "authToken" => "hello"
         ];
     } else {
         $response = [
             "status" => "Fail",
-            "errorMessage" => "Username or password incorrect"
+            "errorMessage" => "Username or password incorrect",
+            "authToken" => NULL
         ];
     }
 }
 
-if ($action === "getSampleData")
-{
-    $response = [
-        "data1",
-        14,
-        "data3"
-    ];
-}
+if ($action === "listItems") { $response = listItems($conn); }
 
-// if ($action === "register")
-// {
-//     $username = $_REQUEST["username"];
-//     $password = $_REQUEST["password"];
-// }
-#$conn = null; # close DB connection
-
+$conn = null; # close DB connection
 echo json_encode($response);
-
-
-
-// $q = $_REQUEST["query"];
-// $test = $_REQUEST["test"];
-// $answer = $q .  ' ' . $test;
-// if ($q == null)
-// {
-//     echo json_encode("Request was null");
-// } else {
-//     echo json_encode($answer);
-// }
