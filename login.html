@@ -9,7 +9,7 @@
     <!-- Überschrift der Login seite -->
     <h1 class="Login"> Willkommen! </h1>
 
-    <form action="index.html">
+    <form action="">
     <label for="username"> Benutzername: </label><br>
     <input type="text" id="Username" name="Username"><br>
     <label for="password">Password:</label><br>
@@ -21,28 +21,16 @@
 
 
     
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-  <input id="eingabe">
-  <button id="enter"></button>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function(){
-    $("#enter").click(function(){
-      console.log($("#eingabe").val())
-  });
-});
-
- 
-
-  
-</script>
   </body>
 
   <script>
-  document.getElementById("demo").innerHTML = "script1";
-    let username = document.getElementById("eingabe")
-    let password = document.getElementById("passwort")
+  // document.getElementById("demo").innerHTML = "script1";
+    let username = document.getElementById("Username")
+    let password = document.getElementById("pwd")
+    console.log(username)
+    console.log(password)
   fetch('src/backend.php?action=login&username=${username}&password=${passwort}')
           .then((response) => {
               if(!response.ok){ // Before parsing (i.e. decoding) the JSON data,
@@ -50,6 +38,7 @@
                   // In case of an error, throw.
                   throw new Error("Something went wrong!");
                   console.log($("#username"))
+
               }
 
               return response.json(); // Parse the JSON data.
