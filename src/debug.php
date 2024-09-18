@@ -19,9 +19,7 @@ try {
     echo json_encode($response);
 }
 
-$sql = "INSERT INTO Users (username, password)
-  VALUES ('test', 'test')";
-$conn->exec($sql);
+
 
 
 echo "Init DB";
@@ -69,5 +67,9 @@ try {
 } catch(PDOException $e) {
   echo $sql . "<br>" . $e->getMessage();
 }
+
+$sql = "INSERT INTO users (username, password)
+  VALUES ('test', 'test')";
+$conn->exec($sql);
 
 $conn = null;
