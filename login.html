@@ -27,11 +27,11 @@
 
   <script>
   // document.getElementById("demo").innerHTML = "script1";
-    let username = document.getElementById("Username")
-    let password = document.getElementById("pwd")
+    let username = document.getElementById("Username").value
+    let password = document.getElementById("pwd").value
     console.log(username)
     console.log(password)
-  fetch('src/backend.php?action=login&username=${username}&password=${passwort}')
+  fetch('src/backend.php?action=login&username=${username}&password=${password}')
           .then((response) => {
               if(!response.ok){ // Before parsing (i.e. decoding) the JSON data,
                                 // check for any errors.
