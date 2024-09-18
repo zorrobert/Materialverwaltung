@@ -1,0 +1,15 @@
+ {
+    "Materialien": [
+        {
+        "material": "Zelt",
+        "amount": "3",
+        "augeliehen": "Verfügbar"   
+        },
+
+        {
+        "material": "Bälle",
+        "amount": "2",
+        "augeliehen": "Verfügbar"
+        }
+    ]
+ }

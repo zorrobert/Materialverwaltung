@@ -12,14 +12,39 @@
         <tr> 
           <th>Material</th>
           <th>Menge</th>
-          <th>  </th>
+          <th>Status</th>
+          <th>Ausleihen</th>
+        </tr>
+        <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
         </tr>
       </thead>
     </table>
+<button id="testbutton"> Test fetch</button>
 
+<script>
+  function fetchingFunction() {
+    document.getElementById(testbutton).addEventListener('onclick', function() {
+      console.log("button clicked")
+
+      	fetch('/beispieldaten.json') 
+          .then(response => response.json())
+          .then(json => console.log(json.material))
+          .catch((error) => {
+                console.error('Error:', error);
+            });
+  });
+  }
+  
+
+ </script>
   </body>
 
 
- 
+
 
 </html>
+
