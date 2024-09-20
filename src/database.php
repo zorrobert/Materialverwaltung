@@ -76,10 +76,9 @@ function initDatabase($conn) {
     echo "<p>Created sample data</p>";
 
 
-
     //Beispiels ausgabe .json Datei
     $array = json_decode(file_get_contents("../beispieldaten.json"), true);
-   echo '<pre>'; print_r($array; echo '</pre>';
-
-
-    }
+    echo '<pre>';
+    print_r($array);
+    echo '<pre>';
+  }
