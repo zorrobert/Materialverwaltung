@@ -11,34 +11,62 @@
     <table id="MaterialTabelle">
       <thead id="">
         Materialliste
+      </thead>
+      <tbody id="tableBody">
         <tr> 
           <th>Material</th>
           <th>Menge</th>
           <th>Status</th>
           <th>Ausleihen</th>
         </tr>
-        <tr>
-          <td> </td>
-          <td> </td>
-          <td> </td>
-          <td> </td>
-        </tr>
-      </thead>
+       
+      </tbody>
     </table>
-<button id="testbutton"> Test fetch</button>
+<button id="testbutton" onclick="fetchingFunction()"> Test fetch</button>
 
 <script>
   function fetchingFunction() {
-    document.getElementById(testbutton).addEventListener('onclick', function() {
-      console.log("button clicked")
+    console.log("button clicked")
 
       	fetch('/beispieldaten.json') 
           .then(response => response.json())
-          .then(json => console.log(json.material))
+          .then(data => createTable(data))
           .catch((error) => {
                 console.error('Error:', error);
             });
-  });
+  }
+  
+  function createTable(data) {
+
+    console.log(data.length)
+    console.log(data.Materialien.length)
+
+    console.log(data)
+
+    for (i = 0; i < data.Materialien.length; i++) {
+      let newTableRow = document.createElement("tr")
+      const tableBody = document.getElementById("tableBody")
+
+      let newTableCell1 = document.createElement("td")
+      let newTableCell2 = document.createElement("td")
+      let newTableCell3 = document.createElement("td")
+      let newTableCell4 = document.createElement("td")
+
+
+      newTableCell1.innerHTML= data.Materialien[i].material
+      newTableCell2.innerHTML = data.Materialien[i].amount;
+      newTableCell3.innerHTML = data.Materialien[i].augeliehen
+      newTableCell4.innerHTML = "ausleihen clicken"
+
+
+      tableBody.appendChild(newTableRow)
+      newTableRow.appendChild(newTableCell1)
+      newTableRow.appendChild(newTableCell2)
+      newTableRow.appendChild(newTableCell3)
+      newTableRow.appendChild(newTableCell4)
+
+    }
+
   }
   
 
