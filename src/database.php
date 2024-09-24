@@ -20,6 +20,15 @@ try {
     // echo json_encode($response);
 }
 
+// .json Daten auslesen
+$json = file_get_contents('../beispieldaten.json');
+$array = json_decode($json, true);
+
+// ausgabe json Datei zum test
+echo '<pre>';
+print_r($array["Materialien"][0]["material"]);
+echo '<pre>';
+
 function initDatabase($conn) {
     echo "<p>Delete Databases</p>";
     $conn->exec("DROP TABLE users");
@@ -75,10 +84,4 @@ function initDatabase($conn) {
     $stmt->execute();
     echo "<p>Created sample data</p>";
 
-
-    //Beispiels ausgabe .json Datei
-    $array = json_decode(file_get_contents("../beispieldaten.json"), true);
-    echo '<pre>';
-    print_r($array);
-    echo '<pre>';
   }
