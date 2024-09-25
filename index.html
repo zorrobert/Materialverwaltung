@@ -19,11 +19,11 @@
           <th>Menge</th>
           <th>Status</th>
           <th>Ausleihen</th>
-        </tr>
-       
+        </tr>     
       </tbody>
     </table>
 <button id="testbutton" onclick="fetchingFunction()"> Test fetch</button>
+<button onclick="checkCheckBox()">Check checks</button>
 
 <script>
   function fetchingFunction() {
@@ -52,13 +52,28 @@
       let newTableCell2 = document.createElement("td")
       let newTableCell3 = document.createElement("td")
       let newTableCell4 = document.createElement("td")
+      //let tableCell4CheckBox = document.createElement("div")
+
+      let tableCell4CheckBox = document.createElement("input")
 
 
       newTableCell1.innerHTML= data.Materialien[i].material
       newTableCell2.innerHTML = data.Materialien[i].amount;
       newTableCell3.innerHTML = data.Materialien[i].augeliehen
-      newTableCell4.innerHTML = "ausleihen clicken"
+      
+      tableCell4CheckBox.setAttribute('type', 'checkbox')
+      tableCell4CheckBox.setAttribute('value', '1')
 
+      tableCell4CheckBox.className += "Klasse form-check-input"
+
+
+     // document.tableCell4CheckBox.checked = true;
+     
+     
+      // document.getElementById("option1");
+      // check_val = option1.val();
+      // console.log(check_val)
+      // checkCheckBox();
 
       tableBody.appendChild(newTableRow)
       newTableRow.appendChild(newTableCell1)
@@ -66,9 +81,21 @@
       newTableRow.appendChild(newTableCell3)
       newTableRow.appendChild(newTableCell4)
 
+      newTableCell4.appendChild(tableCell4CheckBox);
     }
 
   }
+
+
+
+function checkCheckBox() {
+  const parentElement = document.getElementsByClassName("")
+  const childElements = parentElement.children;
+  for (const child of childElements) {
+    console.log(child.tagname)
+  }
+  check_val = tableCell4CheckBox.val
+}
   
 
  </script>
