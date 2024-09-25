@@ -5,6 +5,9 @@ if ($action === "login")
 {
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
+    password_hash($password, PASSWORD_DEFAULT);
+    console.log($password);
+
     #if (checkLogin($conn, $username, $password)) {
     if ($username === $password) {
         $response = [
