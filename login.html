@@ -13,12 +13,12 @@
       <h1 class="title">Herzlich Willkommen!</h1>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <form action="src/backend.php" method="POST" id="loginForm">
       <div class="bg-#8DC877">
         <label for="username">Benutzername:</label><br>
         <input type="text" id="Username" name="Username"><br>
-    </p> 
+    </p>
       </div>
         <label for="password">Password:</label><br>
         <input type="password" id="pwd" name="pwd"><br>
@@ -27,7 +27,7 @@
     </form>
 
 
-    
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
@@ -54,7 +54,7 @@
                 return response.json();
             })
             .then((data) => {
-                window.location.assign("/index.html")
+                window.location.assign("/index.html");
                 console.log(data);
             })
             .catch((error) => {
