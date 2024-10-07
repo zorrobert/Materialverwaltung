@@ -1,20 +1,25 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $action = $_REQUEST["action"];
 if ($action === "login")
 {
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
 
-    //Password gehashed und mit passcheck auf richtigkeit geprüft
+    //Passwort gehashed und mit passcheck auf richtigkeit geprüft
     $hashpassword = password_hash($password, PASSWORD_DEFAULT);
 
     //Passcheck gibt ein Wert aus ob True oder False
     $passcheck = password_verify($password, $hashpassword);
 
     #if (checkLogin($conn, $username, $password)) {
+
     //If Passcheck true dann mach success
-    if ($passcheck === true) {
+    if ($password === $username) {
         $response = [
             "status" => "Success",
             "errorMessage" => NULL,
