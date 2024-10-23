@@ -39,20 +39,11 @@ class ActionController
 
     public function listItems(): Response
     {
-        //$ItemContoller = new ItemController();
-
-        //$data = $ItemContoller->getItems();
-        //var_dump($this->request->getSessionVariable());
-        //$this->request->setSessionVariable("test", "test");
-        $data = [
-            "items" => [
-                ["name"=>"Kleiner Topf","group"=>"Topf","available" => true,"lender"=>NULL],
-                ["name"=>"Großer Topf","group"=>"Topf","available" => false,"lender"=>"robert"],
-                ["name"=>"Zeltplane","group"=>"Zeltmaterial","available" => false,"lender"=>"oliver"]
-            ],
-        ];
+        $itemController = new ItemController();
+        $data = $itemController->getItems();
         return new Response($data, 200);
     }
+
 
     /*sequenceDiagram
 participant Client

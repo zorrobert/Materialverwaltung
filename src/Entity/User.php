@@ -1,6 +1,5 @@
 <?php
 namespace Robert\Materialverwaltung\Entity;
-
 use PDO;
 
 class User
