@@ -16,14 +16,13 @@
 
     <form action="src/backend.php" method="POST" id="loginForm">
       <div class="bg-#8DC877">
-        <label for="username">Benutzername:</label><br>
-        <input type="text" id="Username" name="Username"><br>
+        <input type="hidden" name="action" value="login">
+        <input type="text" name="username" placeholder="Username" id="username" required><br>
     </p>
       </div>
-        <label for="password">Password:</label><br>
-        <input type="password" id="pwd" name="pwd"><br>
+        <input type="password" name="password" placeholder="Password" id="password" required><br>
     </p>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Login">
     </form>
 
 
@@ -31,7 +30,7 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
+        document.getElementById('loginForm').addEventListener('login', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
             let username = document.getElementById("Username").value;
