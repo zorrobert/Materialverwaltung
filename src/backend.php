@@ -17,7 +17,8 @@ $response = match($request->getAction()) {
     'test' => $actionController->test(),
     'login' => $actionController->login(),
     'listItems' => $actionController->listItems(),
-    default => new Response(["error" => "Unknown action"], 404)
+    default => $actionController->listItems(),
+    //default => new Response(["error" => "Unknown action"], 404)
 };
 
 echo json_encode([

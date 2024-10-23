@@ -25,18 +25,8 @@ class Request
     {
         return $this->post["action"] ?? 'error';
     }
-
     public function getQueryParameter(string $name)
     {
         return $this->post[$name] ?? null;
-    }
-
-    public function getSession(): array
-    {
-        return $this->session;
-    }
-    public function setSessionVariable(string $name, $value = null): void
-    {
-        $this->session[$name] = $value;
     }
 }

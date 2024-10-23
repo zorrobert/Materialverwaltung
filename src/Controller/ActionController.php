@@ -30,8 +30,7 @@ class ActionController
         $user = new User($username);
 
         if ($user->login($password)) {
-            //$token = $user->createAuthToken();
-            //this->request->setSessionVariable("authToken", $token);
+            $_SESSION["user"] = $username;
             return new Response([], 200);
         } else {
             return new Response([], 401, "Login failed: Incorrect username or password");
@@ -43,6 +42,8 @@ class ActionController
         //$ItemContoller = new ItemController();
 
         //$data = $ItemContoller->getItems();
+        //var_dump($this->request->getSessionVariable());
+        //$this->request->setSessionVariable("test", "test");
         $data = [
             "items" => [
                 ["name"=>"Kleiner Topf","group"=>"Topf","available" => true,"lender"=>NULL],
