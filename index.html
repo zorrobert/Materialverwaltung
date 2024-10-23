@@ -1,8 +1,3 @@
-<?php
-# this just loads the classes
-require __DIR__ . '/vendor/autoload.php';
-?>
-
 <html lang="de" dir="ltr" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">
@@ -17,7 +12,7 @@ require __DIR__ . '/vendor/autoload.php';
     
     <table id="MaterialTabelle">
       <thead id="">
-        Materialliste - 23.10.2024
+        Materialliste xxx
       </thead>
       <tbody id="tableBody">
         <tr> 
@@ -30,12 +25,14 @@ require __DIR__ . '/vendor/autoload.php';
     </table>
 <button id="testbutton" onclick="fetchingFunction()"> Test fetch</button>
 <button onclick="checkCheckBox()">Check checks</button>
+
 <button id="submitButton">SubmitButton</button>
 
 <div>
   <button onclick="addListElementADMIN()">ADMIN</button>
 </div>
 <script>
+  
   const tableBody = document.getElementById("tableBody")
 
   function fetchingFunction() {
@@ -47,12 +44,13 @@ require __DIR__ . '/vendor/autoload.php';
           .catch((error) => {
                 console.error('Error:', error);
             });
+         
        const but = document.getElementById("testbutton")
-       but.setAttribute("disabled", "disabled")  
+       but.setAttribute("disabled", "disabled")
       }
   
+  
   function createTable(data) {
-
     console.log(data.Materialien[0].material)
     console.log(data.Materialien.length)
 
@@ -60,7 +58,6 @@ require __DIR__ . '/vendor/autoload.php';
 
     for (i = 0; i < data.Materialien.length; i++) {
       let newTableRow = document.createElement("tr")
-      const tableBody = document.getElementById("tableBody")
 
       let newTableCell1 = document.createElement("td")
       let newTableCell2 = document.createElement("td")
@@ -68,7 +65,6 @@ require __DIR__ . '/vendor/autoload.php';
       let newTableCell4 = document.createElement("td")
       let newTableCell5 = document.createElement("td")
 
-      //let tableCell4CheckBox = document.createElement("div")
 
       let tableCell4CheckBox = document.createElement("input")
       let tableCell5Input = document.createElement("input")
@@ -79,50 +75,32 @@ require __DIR__ . '/vendor/autoload.php';
       
       tableCell4CheckBox.setAttribute('type', 'checkbox')
       tableCell4CheckBox.setAttribute('id', data.Materialien[i].material)
-
       tableCell4CheckBox.className += "Klasse form-check-input"
 
       tableCell5Input.setAttribute('type', 'number')
       tableCell5Input.setAttribute('id', data.Materialien[i].material + "Amount")
       tableCell5Input.min = 0;
       tableCell5Input.className += "Amount"
-
-     // document.tableCell4CheckBox.checked = true;
      
-     
-      // document.getElementById("option1");
-      // check_val = option1.val();
-      // console.log(check_val)
-      // checkCheckBox();
-
+      
       tableBody.appendChild(newTableRow)
       newTableRow.appendChild(newTableCell1)
       newTableRow.appendChild(newTableCell2)
-      newTableRow.appendChild(newTableCell3)   
+      newTableRow.appendChild(newTableCell3)
       newTableRow.appendChild(newTableCell5)
-
       newTableRow.appendChild(newTableCell4)
       newTableCell5.appendChild(tableCell5Input)
-      newTableCell4.appendChild(tableCell4CheckBox);
+      newTableCell4.appendChild(tableCell4CheckBox)
+     
+    
     }
-      const submitButton = document.getElementById("submitButton")
-      submitButton.addEventListener("click", function() {
+    const submitButton = document.getElementById("submitButton")
+    submitButton.addEventListener("click", function() {
       submitList(data);
 });
   }
 
-
-
-// function checkCheckBox() {
-//   const parentElement = document.getElementsByClassName("")
-//   const childElements = parentElement.children;
-//   for (const child of childElements) {
-//     console.log(child.tagname)
-//   }
-//   check_val = tableCell4CheckBox.val
-// }
-
-function checkStorage(data, selectedAmount, passId) {
+  function checkStorage(data, selectedAmount, passId) {
     console.log("checkstorage called")
     for (i = 0; i < data.Materialien.length; i++) {
       if(data.Materialien[i].material == passId) {
@@ -249,6 +227,11 @@ const password = "pass"
    
   })
  }
+
+
+
+
+
   
 
  </script>
