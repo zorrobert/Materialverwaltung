@@ -16,6 +16,7 @@ class ActionController
 
     public function test(): Response
     {
+        var_dump(password_hash("paduch", PASSWORD_BCRYPT));
         return new Response(["testDaten"], 200, "");
     }
 
