@@ -4,8 +4,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// $action = $_REQUEST["action"];
+// if($action === "dataentry") {
+//     echo("hello")
+// }
 $action = $_REQUEST["action"];
-if ($action === "login")
+
+if($action === "dataentry") {
+    echo json_encode({message: "hi"})
+}
+ if ($action === "login")
 {
     $username = $_REQUEST["username"];
     $password = $_REQUEST["password"];
@@ -32,5 +40,6 @@ if ($action === "login")
             "authToken" => NULL
         ];
     }
+    echo json_encode($response);
+
 }
-echo json_encode($response);
