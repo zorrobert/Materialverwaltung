@@ -40,10 +40,16 @@ class ActionController
 
     public function listItems(): Response
     {
-        $ItemContoller = new ItemController();
+        //$ItemContoller = new ItemController();
 
-        $data = $ItemContoller->getItems();
-
+        //$data = $ItemContoller->getItems();
+        $data = [
+            "items" => [
+                ["name"=>"Kleiner Topf","group"=>"Topf","available" => true,"lender"=>NULL],
+                ["name"=>"Großer Topf","group"=>"Topf","available" => false,"lender"=>"robert"],
+                ["name"=>"Zeltplane","group"=>"Zeltmaterial","available" => false,"lender"=>"oliver"]
+            ],
+        ];
         return new Response($data, 200);
     }
 
