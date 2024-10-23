@@ -25,7 +25,17 @@ in
     echo hello from $GREET
   '';
 
-  enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
+  scripts.load-db.exec = ''
+    echo "Make sure devenv up is running in another window."
+    echo "Importing Database..."
+    mysql -u material -pmaterial material < ./src/database.sql
+    echo "Imported Database."
+  '';
+
+  enterShell = ''
+    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
+    echo "run load-db in a devenv shell to load the current database for testing."
+  '';
 
   # https://devenv.sh/tests/
   enterTest = ''
@@ -68,7 +78,7 @@ in
     mysql = {
       enable = true;
       initialDatabases = [
-        { name = dbName; }
+        { name = dbName; schema = ./src/database.sql; }
       ];
       ensureUsers = [ {
         name = dbUser;

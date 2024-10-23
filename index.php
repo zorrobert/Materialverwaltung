@@ -1,3 +1,8 @@
+<?php
+# this just loads the classes
+require __DIR__ . '/vendor/autoload.php';
+?>
+
 <html lang="de" dir="ltr" data-bs-theme="dark">
   <head>
     <meta charset="utf-8">

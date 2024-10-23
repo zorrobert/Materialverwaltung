@@ -1,36 +1,28 @@
 <?php
+namespace Robert\Materialverwaltung;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+# in devenv packen
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-$action = $_REQUEST["action"];
-if ($action === "login")
-{
-    $username = $_REQUEST["username"];
-    $password = $_REQUEST["password"];
+require dirname(__DIR__)."/vendor/autoload.php";
 
-    //Passwort gehashed und mit passcheck auf richtigkeit geprüft
-    $hashpassword = password_hash($password, PASSWORD_DEFAULT);
+session_start(); # begin session to store values
 
-    //Passcheck gibt ein Wert aus ob True oder False
-    $passcheck = password_verify($password, $hashpassword);
+$request = Request::fromSuperglobals();
+$actionController = new Controller\ActionController($request);
 
-    #if (checkLogin($conn, $username, $password)) {
+$response = match($request->getAction()) {
+    'test' => $actionController->test(),
+    'login' => $actionController->login(),
+    'listItems' => $actionController->listItems(),
+    default => new Response(["error" => "Unknown action"], 404)
+};
 
-    //If Passcheck true dann mach success
-    if ($password === $username) {
-        $response = [
-            "status" => "Success",
-            "errorMessage" => NULL,
-            "authToken" => "hello $username"
-        ];
-    } else {
-        $response = [
-            "status" => "Fail",
-            "errorMessage" => "Username or password $password is incorrect",
-            "authToken" => NULL
-        ];
-    }
-}
-echo json_encode($response);
+echo json_encode([
+    "data" => $response->getData(),
+    "error" => $response->getErrorMessage(),
+    "status" => $response->getStatus()
+]);
+http_response_code($response->getStatus());
