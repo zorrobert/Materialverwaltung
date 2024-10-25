@@ -17,6 +17,8 @@ $response = match($request->getAction()) {
     'test' => $actionController->test(),
     'login' => $actionController->login(),
     'listItems' => $actionController->listItems(),
+    'logout' => $actionController->logout(),
+    'registration' => $actionController->registration(),
     default => $actionController->listItems(),
     //default => new Response(["error" => "Unknown action"], 404)
 };

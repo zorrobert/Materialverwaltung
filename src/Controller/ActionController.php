@@ -37,6 +37,32 @@ class ActionController
         }
     }
 
+    public function logout()
+    {
+      $_SESSION["user"] = null;
+    }
+
+    public function registration()
+    {
+      //Aktuelle Session Username und Passwort und in variable speichern
+      $username = $this->request->getQueryParameter("username").
+      $password = $this->request->getQueryParameter("password").
+
+      //User objekt erstellt von der Klasse User
+      $user = new User($username).
+
+      if (empty($username))
+      {
+          return new Response([], 401, "Registration failed: No username");
+      }
+      else if (empty($password))
+      {
+          return new Response([], 401, "Registration failed: No password");
+      }
+
+
+    }
+
     public function listItems(): Response
     {
         $itemController = new ItemController();

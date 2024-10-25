@@ -21,20 +21,15 @@ class User
         return password_verify($password, $this->passwordHash);
     }
 
-    public function pullData(): bool
+
+
+    public function pullData()
     {
         $stmt = $this->database->prepare("SELECT * FROM user where name = ?");
         $stmt->execute([$this->username]);
         $result = $stmt->fetchAll();
-
-        if (sizeof($result) == 0) {
-            return false;
-        } else if (sizeof($result) == 1) {
-            $user = $result[0];
-            $this->passwordHash = $user["password_hash"];
-            return true;
-        } else {
-            throw new Exception("More than one user found in database for username.");
-        }
+        if (sizeof($result) > 1) { throw new Exception("More than one user found in database for username"); }
+        $user = $result[0];
+        $this->passwordHash = $user["password_hash"];
     }
 }
