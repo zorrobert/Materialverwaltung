@@ -17,6 +17,7 @@ $response = match($request->getAction()) {
     'test' => $actionController->test(),
     'login' => $actionController->login(),
     'listItems' => $actionController->listItems(),
+    'createItem' => $actionController->createItem(),
     'logout' => $actionController->logout(),
     'registration' => $actionController->registration(),
     default => $actionController->listItems(),

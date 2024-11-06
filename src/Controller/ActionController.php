@@ -1,6 +1,8 @@
 <?php
 namespace Robert\Materialverwaltung\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Robert\Materialverwaltung\Entity\Item;
 use Robert\Materialverwaltung\Request;
 use Robert\Materialverwaltung\Response;
 use Robert\Materialverwaltung\Entity\User;
@@ -68,6 +70,33 @@ class ActionController
         $itemController = new ItemController();
         $data = $itemController->getItems();
         return new Response($data, 200);
+    }
+
+    public function createItem(): Response
+    {
+        $name = $this->request->getQueryParameter("name");
+        $group = $this->request->getQueryParameter("group");
+        $amount = $this->request->getQueryParameter("amount");
+        $item = new Item($name, $group, $amount);
+        if ($item->create())
+        {
+            return new Response([], 200);
+        } else {
+            return new Response([], 500, "The Item could not be created.");
+        }
+    }
+
+    public function lendItem(): Response
+    {
+        $user = $_SESSION["user"];
+        if ($user === NULL) {
+            return new Response([], 401, "You have to be logged in to lend items.");
+        }
+        $name = $this->request->getQueryParameter("name");
+
+        $item = new Item($name);
+        $item->lend();
+        return new Response([], 200);
     }
 
 
