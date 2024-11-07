@@ -1,0 +1,20 @@
+{
+    "name": "robert/materialverwaltung",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Robert\\Materialverwaltung\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zorrobert",
+            "email": "robert.lotz@mailbox.org"
+        }
+    ],
+    "require": {
+        "doctrine/migrations": "^3.8",
+        "ext-pdo": "*",
+        "symfony/console": "^7.1"
+    }
+}
