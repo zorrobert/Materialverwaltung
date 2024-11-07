@@ -5,7 +5,10 @@ let
   dbName = "material";
 in
 {
-  packages = with pkgs; [ git ];
+  packages = with pkgs; [ 
+    git 
+    symfony-cli
+  ];
 
   enterShell = ''
     sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
