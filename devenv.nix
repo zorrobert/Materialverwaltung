@@ -43,9 +43,20 @@ in
     caddy = {
       enable = true;
       virtualHosts."http://localhost" = {
+#         extraConfig = ''
+#           root * .
+#           php_fastcgi unix/${config.languages.php.fpm.pools.web.socket}
+#           file_server
+#         '';
         extraConfig = ''
-          root * .
-          php_fastcgi unix/${config.languages.php.fpm.pools.web.socket}
+          @default {
+            not path /theme/* /media/* /thumbnail/* /bundles/* /css/* /fonts/* /js/* /sitemap/*
+          }
+
+          root * public
+          php_fastcgi @default unix/${config.languages.php.fpm.pools.web.socket} {
+              trusted_proxies private_ranges
+          }
           file_server
         '';
       };
