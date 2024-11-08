@@ -3,17 +3,18 @@ let
   dbUser = "material";
   dbPassword = "material";
   dbName = "material";
+  dbPort = "3306";
+  host = "127.0.0.1";
 in
 {
-  packages = with pkgs; [ 
-    git 
+  dotenv.disableHint = true;
+
+  packages = with pkgs; [
+    git
     symfony-cli
   ];
 
-  enterShell = ''
-    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
-    echo "If you installed this project for the first time, please run 'composer install'."
-  '';
+  enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
 
   scripts = {
     load-db.exec = ''
@@ -29,6 +30,7 @@ in
     enable = true;
     fpm.pools.web = {
       settings = {
+        "clear_env" = "no";
         "pm" = "dynamic";
         "pm.max_children" = 5;
         "pm.start_servers" = 2;
@@ -38,11 +40,18 @@ in
     };
   };
 
+  env = {
+    APP_URL = "http://${host}";
+    DATABASE_URL="mysql://material:material@127.0.0.1:3306/material?serverVersion=10.11.2-MariaDB&charset=utf8mb4";
+    # DATABASE_URL = "mysql://${dbUser}:${dbPassword}@${host}:${dbPort}/${dbName}?serverVersion=8.0.32&charset=utf8mb4";
+    #DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4"
+  };
+
   # create services
   services = {
     caddy = {
       enable = true;
-      virtualHosts."http://localhost" = {
+      virtualHosts."http://${host}" = {
 #         extraConfig = ''
 #           root * .
 #           php_fastcgi unix/${config.languages.php.fpm.pools.web.socket}
@@ -70,6 +79,7 @@ in
         ensurePermissions = { "*.*" = "ALL PRIVILEGES"; };
       }];
       settings.mysqld = {
+        port = dbPort;
       };
     };
   };
