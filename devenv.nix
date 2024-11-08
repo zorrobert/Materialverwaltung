@@ -10,10 +10,7 @@ in
     symfony-cli
   ];
 
-  enterShell = ''
-    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
-    echo "If you installed this project for the first time, please run 'composer install'."
-  '';
+  enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
 
   scripts = {
     load-db.exec = ''
