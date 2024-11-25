@@ -1,0 +1,45 @@
+{
+    "Kategorien": [
+            {
+                "name": "Camping", 
+                "items": [
+                            {
+                            "name": "Zelt",
+                            "category": "Camping",
+                            "status": "Verfügbar",
+                            "datum": "",
+                            "id": 1234,
+                            "datumStart": " "            
+                            }
+                         ] 
+            },
+            {
+                "name": "Spielzeug", 
+                "items": [
+                            {
+                            "name": "Ball",
+                            "category": "Spielzeug",
+                            "status": "Verliehen",
+                            "datum": "2024-12-23",
+                            "id": 5678,
+                            "datumStart": "2024-12-12"              
+                            }
+                        ]
+            },
+            {
+                "name": "Elektonik", 
+                "items": [
+                            {
+                            "name": "Kabeltrommel",
+                            "category": "Elektonik",
+                            "status": "Verfügbar",
+                            "datum": "",
+                            "id": 1234 ,
+                            "datumStart": " "              
+                            }
+                         ]  
+            }
+        ]
+    }
+
+
