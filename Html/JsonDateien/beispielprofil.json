@@ -1,0 +1,28 @@
+{
+    "Profil":[
+        {
+            "ID": 1,
+            "Details":[
+                {
+                    "Anrede": "Frau",
+                    "Vorname": "Paula",
+                    "Nachname": "Müller",
+                    "Adresse": [
+                        {
+                            "Strasse": "Blumenweg",
+                            "Hausnummer": 3,
+                            "Wohnort": "Bamberg",
+                            "Postleitzahl" : 96050
+                        }
+                    
+                    ],
+
+                    "Telefon": 491771234567,
+                    "Email": "Paula.Müller@gmail.com",
+                    "Status": "Aktive"
+
+                }
+            ]
+        }
+    ]
+}
