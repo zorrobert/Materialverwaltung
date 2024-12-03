@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Profil</title>
+    <style>
+        input {pointer-events: none;}
+        #save {display: none;}
+    </style>
 </head>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -109,16 +113,33 @@
                         <input type="zipcode" id="zipcode" name="zipcode"><br>
                     </div>
                 </div>
+                <button id="change"type="button" class="btn btn-secondary">Bearbeiten</button>
+                <button id="save" type="button" class="btn btn-primary">Speichern</button>
             </div>
                 <div class = "col-4">
                     <p style="text-align: center;">Bestellungen</p>
-                   
                 </div>
             </div>
-            
         </div>
     </div>
     </div>
   </div>
 </body>
+
+<script>
+    document.getElementById("change").addEventListener("click", function() {
+            let inputs = document.querySelectorAll("input");
+            inputs.forEach(function(input) {
+                input.style.pointerEvents = "auto";
+            });
+            document.getElementById("save").style.display = "inline-block";
+        });
+    document.getElementById("save").addEventListener("click", function() {
+            let inputs = document.querySelectorAll("input");
+             inputs.forEach(function(input) {
+                input.style.pointerEvents = "none";
+            });
+            document.getElementById("save").style.display = "none";
+        });
+</script>
 </html>
