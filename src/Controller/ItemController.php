@@ -40,4 +40,27 @@ class ItemController extends AbstractController
 
         return new BackendResponse(NULL, 200, $list);
     }
+
+    #[Route('/item/delete')]
+    public function delete(EntityManagerInterface $em): BackendResponse
+    {
+        $request = Request::createFromGlobals()->getContent();
+        $idList = array_filter(json_decode($request)); # filter out NULL values and empty strings
+        if (empty($idList)) {
+            throw new MissingInputException("Endpoint /item/delete expects an array of Item IDs to delete, none provided.");
+        }
+        $itemRepository = $em->getRepository(Item::class);
+
+        foreach ($idList as $id)
+        {
+            $item = $itemRepository->find($id);
+            if (empty($item)) {
+                throw new MissingInputException("Could not delete items: Item ".$id.' was not found.');
+            }
+            $em->remove($item);
+        }
+        $em->flush();
+
+        return new BackendResponse("Successfully deleted ".sizeof($idList).' items.', 200);
+    }
 }
