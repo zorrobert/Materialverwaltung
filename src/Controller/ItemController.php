@@ -7,9 +7,7 @@ use App\Exception\InvalidInputException;
 use App\Exception\MissingInputException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,7 +30,7 @@ class ItemController extends AbstractController
         return new BackendResponse('Successfully created '.sizeof($newItems).' new item(s).', 201);
     }
 
-    #[Route('/item/list')]
+    #[Route('/item/list', name: 'app_item_list')]
     public function list(EntityManagerInterface $em, SerializerInterface $serializer): BackendResponse
     {
         $items = $em->getRepository(Item::class)->findAll();
@@ -42,7 +40,7 @@ class ItemController extends AbstractController
         return new BackendResponse(NULL, 200, $list);
     }
 
-    #[Route('/item/delete')]
+    #[Route('/item/delete', name: 'app_item_delete')]
     public function delete(EntityManagerInterface $em): BackendResponse
     {
         $request = Request::createFromGlobals()->getContent();
@@ -65,7 +63,7 @@ class ItemController extends AbstractController
         return new BackendResponse("Successfully deleted ".sizeof($idList).' items.', 200);
     }
 
-    #[Route('/item/edit')]
+    #[Route('/item/edit', name: 'app_item_edit')]
     public function edit(EntityManagerInterface $em, ValidatorInterface $validator): BackendResponse
     {
         $request = Request::createFromGlobals()->getContent();

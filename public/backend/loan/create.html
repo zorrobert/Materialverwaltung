@@ -1,0 +1,47 @@
+<h4>Create Item</h4>
+<form id="form">
+    <p>
+        <label for="startDate">startDate: </label>
+        <input id="startDate" type="datetime-local">
+    </p>
+    <p>
+        <label for="endDate">endDate: </label>
+        <input id="endDate" type="datetime-local">
+    </p>
+    <p>
+        <label for="items">items: </label>
+        <input id="items" type="text">
+    </p>
+    <input type="submit" id="submit" value="Submit" />
+</form>
+
+<script>
+    const form = document.querySelector("#form");
+    async function sendData() {
+        let requestBody = JSON.stringify(
+            [
+                {
+                    "startDate": document.getElementById('startDate').value,
+                    "endDate": document.getElementById('endDate').value,
+                    "items": document.getElementById('items').value,
+                }
+            ]
+        )
+        try {
+            console.log("Request: "+requestBody);
+            const response = await fetch("/loan/create", {
+                method: "POST",
+                body: requestBody
+            });
+            let serverResponse = await response.json()
+            console.log(serverResponse);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendData();
+    });
+</script>
