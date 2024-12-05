@@ -58,6 +58,18 @@ class Item
         $em->flush();
     }
 
+    public static function editItems(array $items, EntityManagerInterface $em, ValidatorInterface $validator): void
+    {
+        $errors = $validator->validate($items);
+        if ($errors->count() > 0) {
+            throw new InvalidInputException('Error modifying Items: '.$errors[0]->getMessage());
+        }
+        foreach ($items as $item) {
+            $em->persist($item);
+        }
+        $em->flush();
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
