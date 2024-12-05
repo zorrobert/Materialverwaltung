@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Item;
+use App\Exception\InvalidInputException;
 use App\Exception\MissingInputException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,5 +63,35 @@ class ItemController extends AbstractController
         $em->flush();
 
         return new BackendResponse("Successfully deleted ".sizeof($idList).' items.', 200);
+    }
+
+    #[Route('/item/edit')]
+    public function edit(EntityManagerInterface $em, ValidatorInterface $validator): BackendResponse
+    {
+        $request = Request::createFromGlobals()->getContent();
+        if (empty($request)) {
+            throw new MissingInputException("Endpoint /item/edit expects an array of items to modify, none provided.");
+        }
+        //$request = '{"0193919d-2921-7508-8da8-de06754b76b6":{"name":"newName","description":"newDescription","inventoryId":"newinventoryId"},"0193922d-f9d2-7f7b-839e-a8fe56bb8df3":{"name":"newName","description":"newDescription","inventoryId":"uniqueinventoryId"}}';
+        $items = json_decode($request, true);
+
+        $itemRepository = $em->getRepository(Item::class);
+
+        $updatedItems = [];
+        foreach ($items as $id => $item) {
+            $updated = $itemRepository->find($id);
+            foreach ($item as $property => $value) {
+                switch ($property) {
+                    case 'name': $updated->setName($value); break;
+                    case 'description': $updated->setDescription($value); Break;
+                    case 'inventoryId': $updated->setInventoryId($value); Break;
+                    default: throw new InvalidInputException('Error modifying items: Property "'.$property.'" does not exist.');
+                }
+            }
+            $updatedItems[] = $updated;
+        }
+        Item::editItems($updatedItems, $em, $validator);
+
+        return new BackendResponse($request, 200);
     }
 }
