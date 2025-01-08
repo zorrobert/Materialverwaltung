@@ -88,13 +88,13 @@ class Item
         return $uuids;
     }
 
-    public function getName(array $items): ?array
+    public function getName(array $items, EntityManagerInterface $em, ValidatorInterface $validator): ?array
     {
         $names = [];
 
         foreach($items as $item){
             if($item instanceof Item){
-                $name = $item->getName();
+                $name = $item->getName($items, $em, $validator);
                 if($name){
                     $names[] = $name;
                 }
