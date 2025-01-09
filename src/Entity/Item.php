@@ -71,37 +71,14 @@ class Item
         $em->flush();
     }
 
-    public function getId(array $items, EntityManagerInterface $em, ValidatorInterface $validator): ?Uuid
+    public function getId(): ?Uuid
     {
-
-        $uuids = [];
-
-        foreach ($items as $item) {
-            if ($item instanceof Item) {
-                $uuid = $item->getId($items, $em, $validator);  
-            }
-            if($uuid){
-                $uuids = $uuid; 
-            }
-        }
-
-        return $uuids;
+        return $this->id;
     }
 
-    public function getName(array $items): ?array
+    public function getName(): ?string
     {
-        $names = [];
-
-        foreach($items as $item){
-            if($item instanceof Item){
-                $name = $item->getName();
-                if($name){
-                    $names[] = $name;
-                }
-            }
-        }
-     
-        return $name;
+        return $this->name;
     }
 
     public function setName(string $name): static

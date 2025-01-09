@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Serializer\SerializerInterface;
-
 
 #[ORM\Entity(repositoryClass: LoanRepository::class)]
 class Loan
@@ -31,9 +29,15 @@ class Loan
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endDate = null;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
+    {
+        $metadata->addPropertyConstraint('status', new NotBlank([
+            'message' => 'The Status of a Loan cannot be empty or NULL.',
+        ]));
+    }
+
     public function getId(): ?Uuid
     {
-        
         return $this->id;
     }
 

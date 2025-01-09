@@ -22,7 +22,7 @@ class ItemController extends AbstractController
     ): BackendResponse
     {
         $request = Request::createFromGlobals()->getContent();
-        if (empty($request)) { 
+        if (empty($request)) {
             throw new MissingInputException("Endpoint /item/create expects an array of items, none provided.");
         }
         $newItems = Item::fromJsonString($request, $serializer);
