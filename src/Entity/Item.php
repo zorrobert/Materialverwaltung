@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Exception\InvalidInputException;
 use App\Repository\ItemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +35,17 @@ class Item
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $inventoryId = null;
 
+    /**
+     * @var Collection<int, Loan>
+     */
+    #[ORM\ManyToMany(targetEntity: Loan::class, mappedBy: 'items')]
+    private Collection $loans;
+
+    public function __construct()
+    {
+        $this->loans = new ArrayCollection();
+    }
+
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
         $metadata->addConstraint(new UniqueEntity([
@@ -40,11 +53,6 @@ class Item
             'message' => 'The Inventory ID must be unique across all items.',
             'ignoreNull' => [ 'inventoryId' ],
         ]));
-    }
-
-    public static function fromJsonString(string $jsonString, SerializerInterface $serializer): array
-    {
-        return $serializer->deserialize($jsonString, Item::class . '[]', 'json');
     }
 
     public static function createItems(array $items, EntityManagerInterface $em, ValidatorInterface $validator): void
@@ -108,6 +116,33 @@ class Item
     public function setInventoryId(?string $inventoryId): static
     {
         $this->inventoryId = $inventoryId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loan>
+     */
+    public function getLoans(): Collection
+    {
+        return $this->loans;
+    }
+
+    public function addLoan(Loan $loan): static
+    {
+        if (!$this->loans->contains($loan)) {
+            $this->loans->add($loan);
+            $loan->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoan(Loan $loan): static
+    {
+        if ($this->loans->removeElement($loan)) {
+            $loan->removeItem($this);
+        }
 
         return $this;
     }

@@ -9,6 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Encoder\EncoderInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -18,6 +22,8 @@ class ItemController extends AbstractController
     public function create(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
+        DenormalizerInterface $denormalizer,
+        DecoderInterface $decoder,
         ValidatorInterface $validator
     ): BackendResponse
     {
@@ -25,7 +31,11 @@ class ItemController extends AbstractController
         if (empty($request)) {
             throw new MissingInputException("Endpoint /item/create expects an array of items, none provided.");
         }
-        $newItems = Item::fromJsonString($request, $serializer);
+
+        $newItems = $serializer->deserialize($request, Item::class . '[]', 'json');
+        //$temp = $decoder->decode($request, 'json');
+        //$newItems = $denormalizer->denormalize($temp, Item::class);
+
         Item::createItems($newItems, $em, $validator);
         return new BackendResponse('Successfully created '.sizeof($newItems).' new item(s).', 201);
     }

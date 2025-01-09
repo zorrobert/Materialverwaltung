@@ -9,8 +9,12 @@
         <input id="endDate" type="datetime-local">
     </p>
     <p>
-        <label for="items">items: </label>
-        <input id="items" type="text">
+        <label for="item1">items: </label>
+        <input id="item1" type="text">
+    </p>
+    <p>
+        <label for="item2">items: </label>
+        <input id="item2" type="text">
     </p>
     <input type="submit" id="submit" value="Submit" />
 </form>
@@ -23,7 +27,10 @@
                 {
                     "startDate": document.getElementById('startDate').value,
                     "endDate": document.getElementById('endDate').value,
-                    "items": document.getElementById('items').value,
+                    "items": [
+                        document.getElementById('item1').value,
+                        document.getElementById('item2').value,
+                    ],
                 }
             ]
         )

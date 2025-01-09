@@ -22,18 +22,17 @@ class LoanController extends AbstractController
         ValidatorInterface $validator
     ): BackendResponse
     {
-        //$request = Request::createFromGlobals()->getContent();
-        $request = '[{"startDate":"2024-12-12T03:03","endDate":"2024-12-12T03:03"}]';
-        //$request = '[{"startDate":"2024-12-12T03:03","endDate":"2024-12-12T03:03","items":"01939198-9d3a-733f-89fc-4f5e511ed54c"}]';
+        $request = Request::createFromGlobals()->getContent();
+        //$request = '[{"startDate":"2025-01-16T03:03","endDate":"2025-01-30T01:01","items":[]}]';
         if (empty($request)) {
-            throw new MissingInputException("Endpoint /loan/create expects omeawf");
+            throw new MissingInputException("Endpoint /loan/create expects");
         }
+
         $loans = $serializer->deserialize($request, Loan::class . '[]', 'json');
-//            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
-//                Loan::class.'[]' => ['status' => 'requested'],
-//            ],
-//            AbstractNormalizer::ATTRIBUTES => ['status', 'status' => ['requested']]
-//        ]);
+
+        //$bide = $serializer->serialize($loans, 'json');
+
+        //return new BackendResponse($bide, 201);
 
         foreach ($loans as $loan) {
             $loan->setStatus('requested');
@@ -48,6 +47,16 @@ class LoanController extends AbstractController
         }
         $em->flush();
 
-        return new BackendResponse('Successfully created '.sizeof($loans).' new loan(s).', 201);
+        return new BackendResponse($request.'Successfully created '.sizeof($loans).' new loan(s).', 201);
+    }
+
+    #[Route('/loan/list', name: 'app_loan_list')]
+    public function list(EntityManagerInterface $em, SerializerInterface $serializer): BackendResponse
+    {
+        $loans = $em->getRepository(Loan::class)->findAll();
+
+        $list = $serializer->normalize($loans);
+
+        return new BackendResponse(NULL, 200, $list);
     }
 }

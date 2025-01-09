@@ -21,22 +21,13 @@ class ItemNormalizer implements NormalizerInterface //, DenormalizerInterface
 
         // replace array of loan entities with array of uuids
         $loans = [];
-        foreach ($data["loans"] as $loan) {
+        foreach ($object->getLoans() as $loan) {
             $loans[] = $loan->getId();
         }
         $data["loans"] = $loans;
 
         return $data;
     }
-
-//    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
-//    {
-//        //$object = $this->normalizer->denormalize($data, $format);
-//        $object = new Item();
-//        $object->setInventoryId("eeeee");
-//        $object->setName("moin");
-//        return $object;
-//    }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
