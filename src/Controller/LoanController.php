@@ -59,4 +59,27 @@ class LoanController extends AbstractController
 
         return new BackendResponse(NULL, 200, $list);
     }
+
+    #[Route('/loan/delete', name: 'app_loan_delete')]
+    public function delete(EntityManagerInterface $em): BackendResponse
+    {
+        $request = Request::createFromGlobals()->getContent();
+        $idList = array_filter(json_decode($request)); # filter out NULL values and empty strings
+        if (empty($idList)) {
+            throw new MissingInputException("Endpoint /loan/delete expects an array of Loan IDs to delete, none provided.");
+        }
+        $loanRepository = $em->getRepository(Loan::class);
+
+        foreach ($idList as $id)
+        {
+            $loan = $loanRepository->find($id);
+            if (empty($loan)) {
+                throw new MissingInputException("Could not delete loans: Loan ".$id.' was not found.');
+            }
+            $em->remove($loan);
+        }
+        $em->flush();
+
+        return new BackendResponse("Successfully deleted ".sizeof($idList).' loans.', 200);
+    }
 }

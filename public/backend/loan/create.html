@@ -1,4 +1,4 @@
-<h4>Create Item</h4>
+<h4>Create Loan</h4>
 <form id="form">
     <p>
         <label for="startDate">startDate: </label>
@@ -9,12 +9,8 @@
         <input id="endDate" type="datetime-local">
     </p>
     <p>
-        <label for="item1">items: </label>
-        <input id="item1" type="text">
-    </p>
-    <p>
-        <label for="item2">items: </label>
-        <input id="item2" type="text">
+        <label for="items">items: </label>
+        <input id="items" type="text">
     </p>
     <input type="submit" id="submit" value="Submit" />
 </form>
@@ -27,10 +23,7 @@
                 {
                     "startDate": document.getElementById('startDate').value,
                     "endDate": document.getElementById('endDate').value,
-                    "items": [
-                        document.getElementById('item1').value,
-                        document.getElementById('item2').value,
-                    ],
+                    "items": document.getElementById('items').value.split(","),
                 }
             ]
         )
