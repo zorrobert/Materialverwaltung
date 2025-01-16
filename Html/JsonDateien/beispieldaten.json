@@ -50,7 +50,22 @@
                             "category": "Küche & Essen",
                             "status": "Verfügbar",
                             "id": 4,
-                            "menge": "30/50",
+                            "menge": "50",
+                            "orders": [
+                                 {
+                                    "userid": 123154,
+                                    "menge": "10",
+                                    "datumStart": "2025-01-04 05:00 PM",
+                                    "datumEnde": "2025-01-07 09:00 AM"                         
+                                }, 
+                                {
+                                    "userid": 345356,
+                                    "menge": "20",
+                                    "datumStart": "2025-01-04 05:00 PM",
+                                    "datumEnde": "2025-01-07 09:00 AM"                         
+                                }
+
+                            ],
                             "datumStart": "2025-01-04 05:00 PM",
                             "datumEnde": "2025-01-07 09:00 AM"                         
                             },
@@ -60,7 +75,7 @@
                             "category": "Küche & Essen",
                             "status": "Verfügbar",
                             "id": 5,
-                            "menge": "50/50",
+                            "menge": "20/50",
                             "datumStart": " ",
                             "datumEnde": " "                         
                             },
@@ -70,8 +85,8 @@
                             "status": "Verfügbar",
                             "id": 6,
                             "menge": "50/50",
-                            "datumStart": " ",
-                            "datumEnde": " "                         
+                            "datumStart": "2025-02-10 05:00 PM",
+                            "datumEnde": "2025-02-17 09:00 AM"                                               
                             }
                          ] 
             }

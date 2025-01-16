@@ -104,6 +104,7 @@
                             <th>Menge</th>
                             <th>Verliehen von</th>
                             <th>Verliehen bis</th>
+                            <th>Menge zu verleihen</th>
                           </tr>     
                         </tbody>
                       </table>
@@ -278,13 +279,43 @@ $(function() {
             // Get all values of the item object dynamically
             Object.values(item).forEach((value) => {
                         let newTableCell = document.createElement("td");
-                        newTableCell.textContent = value; // Add the value dynamically
-                                        
+                        newTableCell.textContent = value; // Add the value dynamically                                   
                         newTableRow.appendChild(newTableCell);
+                        
+
             });
-            // Append the complete row to the table
-            tableBody.appendChild(newTableRow);
-           // newTableRow.lastChild.remove()
+            
+                let selectAmountCell = document.createElement("td")
+                if(!item.menge.trim() == "") {
+                    
+                    let availableAmountArray = item.menge.split("/")
+                    
+                    console.log("verliehene Menge", availableAmountArray[0])
+                    console.log("verfügbare Menge", availableAmountArray[1])
+
+                    if(availableAmountArray[0] <  availableAmountArray[1]) {
+
+                        let selectAmount = document.createElement("input")
+                        selectAmount.type = "number";
+                        selectAmount.min = 1;
+                        selectAmount.max = availableAmountArray[1] - availableAmountArray[0]
+                        newTableRow.appendChild(selectAmountCell)
+                        selectAmountCell.appendChild(selectAmount)
+                    } else {
+                        newTableRow.appendChild(selectAmountCell)
+                    }
+
+
+                    
+                } else {
+                    let selectCell = document.createElement("input")
+                    selectCell.type = "checkbox"
+                    selectAmountCell.appendChild(selectCell)
+                    newTableRow.appendChild(selectAmountCell)
+                }
+                // Append the complete row to the table
+                tableBody.appendChild(newTableRow);
+                // newTableRow.lastChild.remove()
           
         });
       
@@ -311,11 +342,18 @@ $(function() {
                 if(!item.menge.trim() == "") {
 
                     let availableAmountArray = item.menge.split("/")
-                    console.log("verfügbare Menge", availableAmountArray[0])
-
+                    
+                    console.log("verliehene Menge", availableAmountArray[0])
+                    console.log("verfügbare Menge", availableAmountArray[1])
+                    if(!(availableAmountArray[0] <  availableAmountArray[1])) {
+                        disableItemSelect(item.id)
+                    }
+                 
+                } else {
+                    disableItemSelect(item.id)
                 }
               
-                disableItemSelect(item.id)
+             
             } else {
                 console.log("date is not between")
             }            
