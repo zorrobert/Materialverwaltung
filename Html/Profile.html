@@ -1,145 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Profil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        input {pointer-events: none;}
-        #save {display: none;}
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .logo-container {
+            width: 70px;
+            /* Größe des Logos */
+            height: 70px;
+            /* Größe des Logos */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 50%;
+            /* Rundes Logo */
+        }
+
+        .profile-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 25px;
+        }
+
+        .sidebar {
+            width: 5rem;
+            background: #343a40;
+            height: 100vh;
+            position: fixed;
+            padding-top: 20px;
+        }
+        .fa-2x{
+            font-size: 3em;
+        }
+        .sidebar .nav-link {
+            color: white;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: #495057;
+            border-radius: 5px;
+        }
+
+        .form-control:disabled {
+            background-color: #e9ecef;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .orders-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+
+        #save {
+            display: none;
+        }
+
+        body {
+            background-color: darkgrey;
+        }
+        .order {
+            background: rgb(182, 180, 180);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+        .order.row p{
+            text-align: center;
+
+        }
+        
     </style>
 </head>
-<body>
-    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-        <symbol id="home" viewBox="0 0 16 16"> 
-            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"></path> 
-        </symbol> 
-        <symbol id="card-list" viewBox="0 0 16 16"> 
-            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-            <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/></symbol> 
-        <symbol id="table" viewBox="0 0 16 16"> 
-            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"></path> 
-        </symbol> 
-        <symbol id="people-circle" viewBox="0 0 16 16"> 
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path> 
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path> 
-        </symbol> 
-        <symbol id="grid" viewBox="0 0 16 16"> 
-            <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"></path> 
-        </symbol> 
-        <symbol id="calendar3" viewBox="0 0 16 16"> 
-            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"></path> 
-            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path> 
-        </symbol> 
-       </svg>
-       <div class="d-flex">
-        <div class="d-flex flex-column bg-light fixed-side text-center" style="width: 4.6rem;">
-            <ul class="nav nav-pills nav-flush flex-row mb-auto text-center">
-                <li class="nav-item">
-                    <a class="nav-link py-3 border-bottom " aria-current="page" title="Logo" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Logo">
-                       <img src="Website_LogoV2.jpg" heigth="40" width="40" ></img>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="Home.html" class="nav-link py-3 border-bottom " aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Heim">
-                            <use xlink:href="#home"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Materialverwaltung.html" class="nav-link py-3 border-bottom" title="Materialverwaltung" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Armaturenbrett">
-                            <use xlink:href="#card-list"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Kalender.html" class="nav-link py-3 border-bottom " title="Kalender" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Aufträge">
-                            <use xlink:href="#calendar3"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Produkte">
-                            <use xlink:href="#grid"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Profile.html" class="nav-link py-3 border-bottom active" title="Profil" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Kunden">
-                            <use xlink:href="#people-circle"></use>
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    
-        <div class="container" style="margin-left: 25 px; margin-right: 25px;">
-            <h1 class="header" style="text-align: center ">Profil</h1>
-            
-            
-            <div class="row">
-              <div class="col-8">
-                <div class="row">
-                    <p style="text-align: center;">Übersicht deiner Profil Daten</p>
-                    <div class= "col-6">
-                        <img  width="50px" height="50px" title="Profilbild"></img><br>
-                        <label for="fname">Vorname:</label><br>
-                        <input type="text" id="fname" name="fname"><br>
-                        <label for="lname">Nachname:</label><br>
-                        <input type="text" id="lname" name="lname"><br>
-                        <label for="Email">Email:</label><br>
-                        <input type="email" id="EMail" name="Email"><br>
-                        <label for="Telefonnummer">Telefonnummer</label><br>
-                        <input type="phonenumber" id="Telefonnummer" name="Telefonnummer"><br>
-                    </div>
-                    <div class="col-6">
-                        <label for="status">Status:</label><br>
-                        <input type="status" id="status" name="status"><br>
-                        <label for="street">Straße:</label><br>
-                        <input type="street" id="street" name="street"><br>
-                        <label for="streetno">Hausnummer:</label><br>
-                        <input type="streetno" id="streetno" name="streetno"><br>
-                        <label for="residence">Wohnort:</label><br>
-                        <input type="residence" id="residence" name="residence"><br>
-                        <label for="zipcode">Postleitzahl</label><br>
-                        <input type="zipcode" id="zipcode" name="zipcode"><br>
-                    </div>
-                </div>
-                <button id="change"type="button" class="btn btn-secondary">Bearbeiten</button>
-                <button id="save" type="button" class="btn btn-primary">Speichern</button>
-            </div>
-                <div class = "col-4">
-                    <p style="text-align: center;">Bestellungen</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>
-</body>
 
+<body>
+    <div class="d-flex">
+        <div class="sidebar d-flex flex-column align-items-center">
+            <div class="logo-container mb-3">
+                <img src="Website_LogoV2.jpg" alt="Logo" class="img-fluid">
+            </div>
+            <a href="Home.html" class="nav-link py-3" title="Home">
+                <i class="fa fa-home fa-2x"></i>
+            </a>
+            <a href="Materialverwaltung.html" class="nav-link py-3" title="Materialverwaltung">
+                <i class="fa fa-list fa-2x"></i>
+            </a>
+            <a href="Kalender.html" class="nav-link py-3" title="Kalender">
+                <i class="fa fa-calendar fa-2x"></i>
+            </a>
+            <a href="Profile.html" class="nav-link py-3 active" title="Profil">
+                <i class="fa fa-user fa-2x"></i>
+            </a>
+        </div>
+        <div class="container" style="margin-left: 5rem; ">
+            <div class="profile-container">
+                <h2 class="text-center">Profil</h2>
+                <p class="text-center">Übersicht deiner Profil Daten</p>
+                <form id="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="gender">Geschlecht:</label>
+                            <select id="gender" class="form-control" disabled>
+                                <option value="male">Männlich</option>
+                                <option value="female">Weiblich</option>
+                                <option value="divers">Divers</option>
+                            </select>
+                            <label for="fname">Vorname:</label>
+                            <input type="text" id="fname" class="form-control" disabled>
+                            <label for="lname">Nachname:</label>
+                            <input type="text" id="lname" class="form-control" disabled>
+                            <label for="birthday">Geburtsdatum:</label>
+                            <input type="date" id="birthday" class="form-control" disabled>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phonenumber">Telefonnummer:</label>
+                            <input type="text" id="phonenumber" class="form-control" disabled>
+                            <label for="street">Straße:</label>
+                            <input type="text" id="street" class="form-control" disabled>
+                            <label for="streetno">Hausnummer:</label>
+                            <input type="text" id="streetno" class="form-control" disabled>
+                            <label for="residence">Wohnort:</label>
+                            <input type="text" id="residence" class="form-control" disabled>
+                            <label for="zipcode">Postleitzahl:</label>
+                            <input type="text" id="zipcode" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 align-content-center">
+                            <button id="change" type="button" class="btn btn-secondary  mt-3">Bearbeiten</button>
+                        </div>
+                        <div class="col-md-9">
+                            <button id="save" type="submit" class="btn btn-primary mt-3">Speichern</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="orders-container mt-4">
+                <h3 id="OrderHeader" class="text-center">Bestellungen
+                    <button id="addOrder" class="bi-menu-button">add Order</button>
+                </h3>
+                <div class="scrollbox" id="OrderBox">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 <script>
-    document.getElementById("change").addEventListener("click", function() {
-            let inputs = document.querySelectorAll("input");
-            inputs.forEach(function(input) {
-                input.style.pointerEvents = "auto";
-            });
-            document.getElementById("save").style.display = "inline-block";
+    document.getElementById("addOrder").addEventListener("click", function () {
+        // Neues Element erstellen
+        var neueBestellung = document.createElement('div');
+        neueBestellung.className = 'order row';
+
+
+        // Bestellungsinformationen hinzufügen
+        var bestellungsNummer = document.createElement('p');
+        bestellungsNummer.className = 'col';
+        bestellungsNummer.textContent = 'Bestellungsnummer: 12345';
+        neueBestellung.appendChild(bestellungsNummer);
+
+        var bestellungsDatum = document.createElement('p');
+        bestellungsDatum.className = 'col';
+        bestellungsDatum.textContent = 'Datum: 30.01.2025';
+        neueBestellung.appendChild(bestellungsDatum);
+
+        var bestellungsStatus = document.createElement('p');
+        bestellungsStatus.className = 'col';
+        bestellungsStatus.textContent = 'Status: In Bearbeitung';
+        neueBestellung.appendChild(bestellungsStatus);
+
+        // Element zum DOM hinzufügen
+        document.getElementById('OrderBox').appendChild(neueBestellung);
+    });
+    function CreateOrderBox(row1 , row2, row3){
+        var Box = document.createElement('div id="OrderBox');
+        Box.appendChild(row1);
+        Box.appendChild(row2);
+        Box.appendChild(row3);
+        return Box;
+    }
+    document.getElementById("change").addEventListener("click", function () {
+        let inputs = document.querySelectorAll("input");
+        inputs.forEach(function (input) {
+            input.disabled = false;
         });
-    document.getElementById("save").addEventListener("click", function() {
-            let inputs = document.querySelectorAll("input");
-             inputs.forEach(function(input) {
-                input.style.pointerEvents = "none";
-            });
-            document.getElementById("save").style.display = "none";
+        document.getElementById("gender").disabled = false;
+        document.getElementById("save").style.display = "inline-block";
+    });
+    document.getElementById("save").addEventListener("click", function (event) {
+        let inputs = document.querySelectorAll("input");
+        inputs.forEach(function (input) {
+            input.style.pointerEvents = "none";
         });
+        document.getElementById("save").style.display = "none";
+
+    });
+    //     async function loadProfileData() {
+    //     try {
+    //         let response = await fetch("https://dein-backend.de/api/profile");
+    //         let data = await response.json();
+
+    //         // Profil-Daten in die Eingabefelder einfügen
+    //         document.getElementById("gender").value = data.gender;
+    //         document.getElementById("fname").value = data.firstName;
+    //         document.getElementById("lname").value = data.lastName;
+    //         document.getElementById("birthday").value = data.birthday;
+    //         document.getElementById("email").value = data.email;
+    //         document.getElementById("phonenumber").value = data.phone;
+    //         document.getElementById("street").value = data.street;
+    //         document.getElementById("streetno").value = data.streetNumber;
+    //         document.getElementById("residence").value = data.city;
+    //         document.getElementById("zipcode").value = data.zipcode;
+
+    //         loadOrders(); // Bestellungen laden
+    //     } catch (error) {
+    //         console.error("Fehler beim Laden der Profildaten:", error);
+    //     }
+    // }
+
+    // // Diese Funktion ruft die Bestellungen ab und zeigt sie in der Bestellungen-Box an
+    // async function loadOrders() {
+    //     try {
+    //         let response = await fetch("https://dein-backend.de/api/orders");
+    //         let orders = await response.json();
+
+    //         let ordersContainer = document.querySelector(".orders-container");
+    //         ordersContainer.innerHTML = "<h3 class='text-center'>Bestellungen</h3>";
+
+    //         if (orders.length === 0) {
+    //             ordersContainer.innerHTML += "<p class='text-center'>Keine Bestellungen vorhanden.</p>";
+    //         } else {
+    //             orders.forEach(order => {
+    //                 ordersContainer.innerHTML += `
+    //                     <div class="card mt-2 p-2">
+    //                         <p><strong>Bestellung:</strong> ${order.id}</p>
+    //                         <p><strong>Datum:</strong> ${order.date}</p>
+    //                         <p><strong>Status:</strong> ${order.status}</p>
+    //                     </div>
+    //                 `;
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error("Fehler beim Laden der Bestellungen:", error);
+    //     }
+    // }
+
+    // // Rufe die Funktion beim Laden der Seite auf
+    // document.addEventListener("DOMContentLoaded", loadProfileData);
+    // document.getElementById("save").addEventListener("click", async function (event) {
+    //     event.preventDefault(); // Verhindert das Neuladen der Seite
+
+    //     let updatedData = {
+    //         gender: document.getElementById("gender").value,
+    //         firstName: document.getElementById("fname").value,
+    //         lastName: document.getElementById("lname").value,
+    //         birthday: document.getElementById("birthday").value,
+    //         email: document.getElementById("email").value,
+    //         phone: document.getElementById("phonenumber").value,
+    //         street: document.getElementById("street").value,
+    //         streetNumber: document.getElementById("streetno").value,
+    //         city: document.getElementById("residence").value,
+    //         zipcode: document.getElementById("zipcode").value
+    //     };
+
+    //     try {
+    //         let response = await fetch("https://dein-backend.de/api/profile", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(updatedData)
+    //         });
+
+    //         if (response.ok) {
+    //             alert("Daten erfolgreich gespeichert!");
+    //         } else {
+    //             alert("Fehler beim Speichern der Daten.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Fehler beim Speichern:", error);
+    //     }
+
+    //     // Felder wieder deaktivieren
+    //     let inputs = document.querySelectorAll("input");
+    //     inputs.forEach(input => input.disabled = true);
+    //     document.getElementById("gender").disabled = true;
+    //     document.getElementById("save").style.display = "none";
+    // });
+
 </script>
+
 </html>
