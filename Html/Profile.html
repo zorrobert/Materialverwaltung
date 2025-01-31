@@ -7,61 +7,9 @@
     <title>Profil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Sidebar.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .logo-container {
-            width: 70px;
-            /* Größe des Logos */
-            height: 70px;
-            /* Größe des Logos */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-container img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 50%;
-            /* Rundes Logo */
-        }
-
-        .profile-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 25px;
-        }
-
-        .sidebar {
-            width: 5rem;
-            background: #343a40;
-            height: 100vh;
-            position: fixed;
-            padding-top: 20px;
-        }
-        .fa-2x{
-            font-size: 3em;
-        }
-        .sidebar .nav-link {
-            color: white;
-            transition: 0.3s;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background: #495057;
-            border-radius: 5px;
-        }
-
-        .form-control:disabled {
-            background-color: #e9ecef;
-        }
-
+        
         .btn-primary {
             width: 100%;
         }
@@ -82,24 +30,33 @@
         body {
             background-color: darkgrey;
         }
-        .order {
-            background: rgb(182, 180, 180);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            justify-content: space-evenly;
-        }
         .order.row p{
             text-align: center;
-
         }
-        
+        #OrderBox{
+            height: 250px;
+            margin: 5px;
+            padding:10px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .order.row{
+            background: rgb(182, 180, 180);
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+        } 
+        #MainPage{
+            margin: 0;
+            padding-left: 0;
+            
+        }
     </style>
 </head>
 
 <body>
-    <div class="d-flex">
+    <div class="container" id="MainPage">
         <div class="sidebar d-flex flex-column align-items-center">
             <div class="logo-container mb-3">
                 <img src="Website_LogoV2.jpg" alt="Logo" class="img-fluid">
@@ -117,7 +74,7 @@
                 <i class="fa fa-user fa-2x"></i>
             </a>
         </div>
-        <div class="container" style="margin-left: 5rem; ">
+        <div class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
             <div class="profile-container">
                 <h2 class="text-center">Profil</h2>
                 <p class="text-center">Übersicht deiner Profil Daten</p>
@@ -162,7 +119,7 @@
                     </div>
                 </form>
             </div>
-            <div class="orders-container mt-4">
+            <div class="orders-container mt-4 ">
                 <h3 id="OrderHeader" class="text-center">Bestellungen
                     <button id="addOrder" class="bi-menu-button">add Order</button>
                 </h3>
