@@ -1,91 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="CSS/Sidebar.css">
+    <link rel="stylesheet" href="CSS/MainPage.css">
+    <style>
+        .blog-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+        .content p{
+            background: rgb(182, 180, 180);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+    </style>
     <title>Home</title>
 </head>
+
 <body>
-    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-        <symbol id="home" viewBox="0 0 16 16"> 
-            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"></path> 
-        </symbol> 
-        <symbol id="card-list" viewBox="0 0 16 16"> 
-            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-            <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/></symbol> 
-        <symbol id="table" viewBox="0 0 16 16"> 
-            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"></path> 
-        </symbol> 
-        <symbol id="people-circle" viewBox="0 0 16 16"> 
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path> 
-            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path> 
-        </symbol> 
-        <symbol id="grid" viewBox="0 0 16 16"> 
-            <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"></path> 
-        </symbol> 
-        <symbol id="calendar3" viewBox="0 0 16 16"> 
-            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"></path> 
-            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path> 
-        </symbol> 
-       </svg>
-       <div class="d-flex">
-        <div class="d-flex flex-column bg-light fixed-side text-center" style="width: 4.6rem;">
-            <ul class="nav nav-pills nav-flush flex-row mb-auto text-center">
-                <li class="nav-item">
-                    <a class="nav-link py-3 border-bottom " aria-current="page" title="Logo" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Logo">
-                       <img src="Website_LogoV2.jpg" heigth="40" width="40" ></img>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="Home.html" class="nav-link py-3 border-bottom active" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Heim">
-                            <use xlink:href="#home"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Materialverwaltung.html" class="nav-link py-3 border-bottom" title="Materialverwaltung" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Armaturenbrett">
-                            <use xlink:href="#card-list"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Kalender.html" class="nav-link py-3 border-bottom " title="Kalender" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Aufträge">
-                            <use xlink:href="#calendar3"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Produkte">
-                            <use xlink:href="#grid"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="Profile.html" class="nav-link py-3 border-bottom" title="Profil" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
-                        <svg class="bi" width="40" height="40" role="img" aria-label="Kunden">
-                            <use xlink:href="#people-circle"></use>
-                        </svg>
-                    </a>
-                </li>
-            </ul>
+    <div class="container" id="MainPage">
+        <div class="sidebar d-flex flex-column align-items-center">
+            <div class="logo-container mb-3">
+                <img src="Website_LogoV2.jpg" alt="Logo" class="img-fluid">
+            </div>
+            <a href="Home.html" class="nav-link py-3 active" title="Home">
+                <i class="fa fa-home fa-2x"></i>
+            </a>
+            <a href="Materialverwaltung.html" class="nav-link py-3" title="Materialverwaltung">
+                <i class="fa fa-list fa-2x"></i>
+            </a>
+            <a href="Kalender.html" class="nav-link py-3" title="Kalender">
+                <i class="fa fa-calendar fa-2x"></i>
+            </a>
+            <a href="Profile.html" class="nav-link py-3" title="Profil">
+                <i class="fa fa-user fa-2x"></i>
+            </a>
         </div>
-    
-        <div class="flex-grow-1 p-3">
+        <div class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
+            <div class="blog-container">
             <h1 class="header" style="text-align: center ">Herrzlich Willkommen</h1>
-            <div class="content">
+            <div>
                 <p style="text-align: center;">Hier werden Neuigkeiten angezeigt</p>
             </div>
-            <h2>
-                Blogeintrag: 
-            </h2>
             <div class="content">
+                <p>
+                    31.01.25: Neues Finales Design!!!
+                </p>
                 <p>
                     03.12.24: Profilseite mit Layout angepasst
                 </p>
@@ -94,8 +66,10 @@
                 </p>
             </div>
         </div>
+        </div>
     </div>
     </div>
-  </div>
+    </div>
 </body>
+
 </html>
