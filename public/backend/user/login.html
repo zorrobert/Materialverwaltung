@@ -1,19 +1,19 @@
-<h1>Edit Item</h1>
+<h1>Login</h1>
 
 <h2>Values</h2>
 
 <form id="form">
     <p>
-        <label for="id">id: </label>
-        <input id="id" type="text">
+        <label for="password">username: </label>
+        <input id="name" type="text">
     </p>
     <p>
-        <label for="property">property: </label>
-        <input id="property" type="text">
+        <label for="description">description: </label>
+        <input id="description" type="text">
     </p>
     <p>
-        <label for="value">value: </label>
-        <input id="value" type="text">
+        <label for="inventoryId">inventoryId: </label>
+        <input id="inventoryId" type="text">
     </p>
     <input type="submit" id="submit" value="Submit" />
 </form>
@@ -35,12 +35,14 @@
 
         // get data from fields
         let requestBody = JSON.stringify(
-            {
-                [document.getElementById('id').value]: {
-                    [document.getElementById('property').value]: document.getElementById('value').value,
+            [
+                {
+                    "name": document.getElementById('name').value,
+                    "description": document.getElementById('description').value,
+                    "inventoryId": document.getElementById('inventoryId').value,
                 }
-            }
-        )
+            ]
+        );
 
         sendData(requestBody);
     });

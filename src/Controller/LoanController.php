@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class LoanController extends AbstractController
 {
-    #[Route('/loan/create', name: 'app_loan_create')]
+    #[Route('/api/loan/create', name: 'app_loan_create')]
     public function create(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
@@ -29,10 +29,6 @@ class LoanController extends AbstractController
         }
 
         $loans = $serializer->deserialize($request, Loan::class . '[]', 'json');
-
-        //$bide = $serializer->serialize($loans, 'json');
-
-        //return new BackendResponse($bide, 201);
 
         foreach ($loans as $loan) {
             $loan->setStatus('requested');
@@ -50,7 +46,7 @@ class LoanController extends AbstractController
         return new BackendResponse($request.'Successfully created '.sizeof($loans).' new loan(s).', 201);
     }
 
-    #[Route('/loan/list', name: 'app_loan_list')]
+    #[Route('/api/loan/list', name: 'app_loan_list')]
     public function list(EntityManagerInterface $em, SerializerInterface $serializer): BackendResponse
     {
         $loans = $em->getRepository(Loan::class)->findAll();
@@ -60,7 +56,7 @@ class LoanController extends AbstractController
         return new BackendResponse(NULL, 200, $list);
     }
 
-    #[Route('/loan/delete', name: 'app_loan_delete')]
+    #[Route('/api/loan/delete', name: 'app_loan_delete')]
     public function delete(EntityManagerInterface $em): BackendResponse
     {
         $request = Request::createFromGlobals()->getContent();

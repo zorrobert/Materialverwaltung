@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Exception\InvalidInputException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -22,6 +23,7 @@ final class ExceptionListener
         # check if this is a custom exception from the application
         switch (true) {
             # User Error: code 400
+            case $exception instanceof InvalidInputException:
             case $exception instanceof MissingInputException:
                 $response = new BackendResponse(
                     NULL,
