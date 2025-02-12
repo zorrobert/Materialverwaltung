@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,6 +36,7 @@ class Item
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $inventoryId = null;
 
+    #[Ignore]
     /**
      * @var Collection<int, Loan>
      */

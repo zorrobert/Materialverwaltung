@@ -1,4 +1,7 @@
-<h4>Create Item</h4>
+<h1>Create Item</h1>
+
+<h2>Values</h2>
+
 <form id="form">
     <p>
         <label for="name">name: </label>
@@ -15,38 +18,51 @@
     <input type="submit" id="submit" value="Submit" />
 </form>
 
+<h2>Request</h2>
+
+<p id="request"></p>
+
+<h2>Response</h2>
+
+<p id="response"></p>
+
 <script>
     const form = document.querySelector("#form");
-    async function sendData() {
+
+    form.addEventListener("submit", (event) => {
+        // prevent the normal form submit
+        event.preventDefault();
+
+        // get data from fields
         let requestBody = JSON.stringify(
             [
                 {
                     "name": document.getElementById('name').value,
                     "description": document.getElementById('description').value,
                     "inventoryId": document.getElementById('inventoryId').value,
-                },
-                {
-                    "name": document.getElementById('name').value+"2",
-                    "description": document.getElementById('description').value+"2",
-                    "inventoryId": document.getElementById('inventoryId').value+"2",
                 }
             ]
-        )
+        );
+
+        sendData(requestBody);
+    });
+
+    async function sendData(requestBody) {
+        // set request data as content for request field
+        document.getElementById('request').innerHTML = requestBody;
+
         try {
             console.log("Request: "+requestBody);
-            const response = await fetch("/item/create", {
+            const response = await fetch("/api/item/create", {
                 method: "POST",
                 body: requestBody
             });
             let serverResponse = await response.json()
             console.log(serverResponse);
+            document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
         } catch (e) {
             console.error(e);
+            document.getElementById('response').innerHTML = JSON.stringify(e);
         }
-    };
-
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        sendData();
-    });
+    }
 </script>

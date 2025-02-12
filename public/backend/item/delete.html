@@ -1,40 +1,54 @@
-<h4>Create Item</h4>
+<h1>Delete Items</h1>
+
+<h2>Values</h2>
+
 <form id="form">
     <p>
-        <label for="id1">id1: </label>
-        <input id="id1" type="text">
-    </p>
-    <p>
-        <label for="id2">id2: </label>
-        <input id="id2" type="text">
+        <label for="id">id: </label>
+        <input id="id" type="text">
     </p>
     <input type="submit" id="submit" value="Submit" />
 </form>
 
+<h2>Request</h2>
+
+<p id="request"></p>
+
+<h2>Response</h2>
+
+<p id="response"></p>
+
 <script>
     const form = document.querySelector("#form");
-    async function sendData() {
+
+    form.addEventListener("submit", (event) => {
+        // prevent the normal form submit
+        event.preventDefault();
+
+        // get data from fields
         let requestBody = JSON.stringify(
-            [
-                document.getElementById('id1').value,
-                document.getElementById('id2').value
-            ]
-        )
+            document.getElementById('id').value.split(",")
+        );
+
+        sendData(requestBody);
+    });
+
+    async function sendData(requestBody) {
+        // set request data as content for request field
+        document.getElementById('request').innerHTML = requestBody;
+
         try {
             console.log("Request: "+requestBody);
-            const response = await fetch("/item/delete", {
+            const response = await fetch("/api/item/delete", {
                 method: "POST",
                 body: requestBody
             });
             let serverResponse = await response.json()
             console.log(serverResponse);
+            document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
         } catch (e) {
             console.error(e);
+            document.getElementById('response').innerHTML = JSON.stringify(e);
         }
-    };
-
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        sendData();
-    });
+    }
 </script>

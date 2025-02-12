@@ -1,4 +1,4 @@
-<h1>Edit Item</h1>
+<h1>Delete Loans</h1>
 
 <h2>Values</h2>
 
@@ -6,14 +6,6 @@
     <p>
         <label for="id">id: </label>
         <input id="id" type="text">
-    </p>
-    <p>
-        <label for="property">property: </label>
-        <input id="property" type="text">
-    </p>
-    <p>
-        <label for="value">value: </label>
-        <input id="value" type="text">
     </p>
     <input type="submit" id="submit" value="Submit" />
 </form>
@@ -35,11 +27,7 @@
 
         // get data from fields
         let requestBody = JSON.stringify(
-            {
-                [document.getElementById('id').value]: {
-                    [document.getElementById('property').value]: document.getElementById('value').value,
-                }
-            }
+            document.getElementById('id').value.split(",")
         )
 
         sendData(requestBody);
@@ -51,7 +39,7 @@
 
         try {
             console.log("Request: "+requestBody);
-            const response = await fetch("/api/item/create", {
+            const response = await fetch("/api/loan/delete", {
                 method: "POST",
                 body: requestBody
             });
