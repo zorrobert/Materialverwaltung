@@ -19,6 +19,10 @@ class ItemVoter extends Voter
             return false;
         }
 
+        if($subject == null ) {
+            return true; 
+        }
+
         // only vote on `Item` objects
         if (!$subject instanceof Item) {
             return false;
@@ -50,7 +54,10 @@ class ItemVoter extends Voter
 
     private function canCreate(User $user): bool
     {
-        return true;
+        if(in_array('ROLE_ADMIN', $user->getRoles())){
+            return true;
+        }
+        return false;
     }
 
 //    private function canView(Post $post, User $user): bool
