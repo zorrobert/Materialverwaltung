@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="CSS/Sidebar.css">
     <link rel="stylesheet" href="CSS/MainPage.css">
+    <link rel="stylesheet" href="CSS/Materialverwaltung.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -41,8 +42,7 @@
             </a>
         </div>
         <div class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
-            <div class="profile-container">
-            <div class="row">
+            <div class="materialverwaltung-container">
                 <div class="col-md-7">
                     <div>Filter</div>
                     <table class="table" id="MaterialTabelle">
@@ -67,22 +67,22 @@
                     </form>
                     <div id="calendar"></div>
                 </div>
+
+                <button onclick="lendItems()" type="button">Submit</button>
+                <div>
+                    <div onclick="fetchList()">Click here to get datadata</div>
+                </div>
+                <div>
+                    <!-- <div onclick="getData()">Click here to get data</div> -->
+                </div>
+
             </div>
 
-            <button onclick="lendItems()" type="button">Submit</button>
-            <div>
-                <div onclick="fetchList()">Click here to get datadata</div>
-            </div>
-            <div>
-                <!-- <div onclick="getData()">Click here to get data</div> -->
-            </div>
         </div>
 
-        </div>
 
 
-        
-        
+
     </div>
 </body>
 
@@ -94,7 +94,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         fetchList();
-      //  fetchLocalList();
+        //  fetchLocalList();
 
     });
     // createCalendar();
@@ -136,23 +136,23 @@
 
     function fetchList() {
         fetch('/api/item/list', {
-            method: 'POST',          
-          })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Something went wrong!");
-            }
-            return response.json()
+            method: 'POST',
         })
-        .then((data) => {
-            fetchedData = data
-            console.log(data)
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Something went wrong!");
+                }
+                return response.json()
+            })
+            .then((data) => {
+                fetchedData = data
+                console.log(data)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
-       createTable();
+        createTable();
 
     }
 
@@ -315,4 +315,5 @@
 <style type="text/css">
 
 </style>
+
 </html>
