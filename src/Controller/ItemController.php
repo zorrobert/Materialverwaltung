@@ -30,9 +30,9 @@ class ItemController extends AbstractController
         }
 
         # this is for authentication, implement later
-//        if (!$this->isGranted('create')) {
-//            throw new MissingInputException("not logged in");
-//        }
+        if (!$this->isGranted('create')) {
+            throw new MissingInputException("not logged in");
+        }
 
         $newItems = $serializer->deserialize($request, Item::class . '[]', 'json');
 
