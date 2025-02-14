@@ -1,0 +1,325 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Sidebar.css">
+
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <style>
+        #MainPage {
+            margin: 0;
+            padding-left: 0;
+
+        }
+    </style>
+    <title>Materialverwaltung</title>
+</head>
+
+<body>
+    <div class="container" id="MainPage">
+        <div class="sidebar d-flex flex-column align-items-center">
+            <div class="logo-container mb-3">
+                <img src="Website_LogoV2.jpg" alt="Logo" class="img-fluid">
+            </div>
+            <a href="Home.html" class="nav-link py-3" title="Home">
+                <i class="fa fa-home fa-2x"></i>
+            </a>
+            <a href="Materialverwaltung.html" class="nav-link py-3" title="Materialverwaltung">
+                <i class="fa fa-list fa-2x"></i>
+            </a>
+            <a href="Kalender.html" class="nav-link py-3" title="Kalender">
+                <i class="fa fa-calendar fa-2x"></i>
+            </a>
+            <a href="Profile.html" class="nav-link py-3 active" title="Profil">
+                <i class="fa fa-user fa-2x"></i>
+            </a>
+        </div>
+        <div class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
+            <div class="row">
+                <div class="col-md-7">
+                    <div>Filter</div>
+                    <table class="table" id="MaterialTabelle">
+                        <tbody id="tableBody">
+                            <tr id="firstTableRow">
+                                <th>Material</th>
+                                <th>Status</th>
+                                <th id="lastTableHead">Ausleihen</th>
+                                <th>Id</th>
+                                <th>Menge</th>
+                                <th>Verliehen von</th>
+                                <th>Verliehen bis</th>
+                                <th>Menge zu verleihen</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-5">
+                    <form action="">
+                        <label for="">Date Select</label>
+                        <input type="text" name="datetimes" />
+                    </form>
+                    <div id="calendar"></div>
+                </div>
+            </div>
+
+            <button onclick="lendItems()" type="button">Submit</button>
+        </div>
+
+
+        <div>
+            <!-- <div onclick="getData()">Click here to get data</div> -->
+        </div>
+        <div>
+            <div onclick="fetchList()">Click here to get datadata</div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchList();
+      //  fetchLocalList();
+
+    });
+    // createCalendar();
+
+    //    const submitDates = document.getElementsByClassName("applyBtn")
+    //    for(element in submitDates) {
+    //         console.log(element[0])
+    //    }
+    //    console.log(submitDates)
+    //    submitDates.addEventListener("click", function() {
+    //     getDates();
+    //    })
+
+
+    const tableBody = document.getElementById("tableBody")
+
+    const firstTableRow = document.getElementById("firstTableRow")
+
+
+
+    let selectedStartDate;
+    let selectedEndDate;
+    $(function () {
+        $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour'),
+            locale: {
+                format: 'YYYY-MM-DD hh:mm A'
+            }
+        },
+            function (start, end, label) {
+                selectedStartDate = start
+                selectedEndDate = end
+                updateListForDates()
+            });
+    })
+
+
+    function fetchList() {
+        fetch('/api/item/list', {
+            method: 'POST',          
+          })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Something went wrong!");
+            }
+            return response.json()
+        })
+        .then((data) => {
+            fetchedData = data
+            console.log(data)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+       createTable();
+
+    }
+
+    function fetchLocalList() {
+        fetch('JsonDateien/beispieldaten.json')
+
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data)
+                fetchedData = data;
+                createTable();
+            })
+    }
+
+
+
+    function sortData(data) {
+        // sort default alphabetically
+        data.Kategorien.sort((a, b) => a.name.localeCompare(b.name));
+        data.Kategorien.forEach((category => {
+            category.items.sort((a, b) => a.name.localeCompare(b.name));
+        }))
+    }
+
+
+    function createTable() {
+        sortData(fetchedData);
+        for (let i = 0; i < fetchedData.Kategorien.length; i++) {
+            let newTableRow = document.createElement("tr")
+            tableBody.appendChild(newTableRow)
+
+            // categoryNames.push(fetchedData.Kategorien[i].name)
+            // categoryNames.sort()
+            // console.log(categoryNames)
+            let categoryName = fetchedData.Kategorien[i].name
+            let categoryItems = fetchedData.Kategorien[i].items
+            newTableRow.innerHTML = categoryName
+            newTableRow.style.fontWeight = "bold"
+            appendItemsToCategory(categoryItems)
+        }
+
+    }
+
+    function appendItemsToCategory(categoryItems) {
+
+        categoryItems.forEach((item) => {
+            let newTableRow = document.createElement("tr");
+
+            // Get all values of the item object dynamically
+            Object.values(item).forEach((value) => {
+                let newTableCell = document.createElement("td");
+                newTableCell.textContent = value; // Add the value dynamically                                   
+                newTableRow.appendChild(newTableCell);
+
+
+            });
+
+            let selectAmountCell = document.createElement("td")
+            if (!item.menge.trim() == "") {
+
+                let availableAmountArray = item.menge.split("/")
+
+                console.log("verliehene Menge", availableAmountArray[0])
+                console.log("verfügbare Menge", availableAmountArray[1])
+
+                if (availableAmountArray[0] < availableAmountArray[1]) {
+
+                    let selectAmount = document.createElement("input")
+                    selectAmount.type = "number";
+                    selectAmount.min = 1;
+                    selectAmount.max = availableAmountArray[1] - availableAmountArray[0]
+                    newTableRow.appendChild(selectAmountCell)
+                    selectAmountCell.appendChild(selectAmount)
+                } else {
+                    newTableRow.appendChild(selectAmountCell)
+                }
+
+
+
+            } else {
+                let selectCell = document.createElement("input")
+                selectCell.type = "checkbox"
+                selectAmountCell.appendChild(selectCell)
+                newTableRow.appendChild(selectAmountCell)
+            }
+            // Append the complete row to the table
+            tableBody.appendChild(newTableRow);
+            // newTableRow.lastChild.remove()
+
+        });
+
+    }
+
+    function updateListForDates() {
+
+        let startDateFromUser = moment(selectedStartDate)
+
+        for (let i = 0; i < fetchedData.Kategorien.length; i++) {
+            let categoryItemsForDates = fetchedData.Kategorien[i].items
+            categoryItemsForDates.forEach((item) => {
+
+                let dateItemStart = moment(item.datumStart, 'YYYY-MM-DD hh:mm A')
+                let dateItemEnd = moment(item.datumEnde, 'YYYY-MM-DD hh:mm A')
+
+                console.log("datum start user", startDateFromUser)
+                console.log("json start", dateItemStart)
+                console.log("json end", dateItemEnd)
+                if (startDateFromUser.isBetween(dateItemStart, dateItemEnd, '[]')) {
+                    console.log("date is between")
+
+                    // check if there is an amount left to lend
+                    if (!item.menge.trim() == "") {
+
+                        let availableAmountArray = item.menge.split("/")
+
+                        console.log("verliehene Menge", availableAmountArray[0])
+                        console.log("verfügbare Menge", availableAmountArray[1])
+                        if (!(availableAmountArray[0] < availableAmountArray[1])) {
+                            disableItemSelect(item.id)
+                        }
+
+                    } else {
+                        disableItemSelect(item.id)
+                    }
+
+
+                } else {
+                    console.log("date is not between")
+                }
+            })
+        }
+
+    }
+
+    function disableItemSelect(itemId) {
+        const rows = document.querySelectorAll('#MaterialTabelle tr')
+        for (let row of rows) {
+            const cells = row.querySelectorAll('td')
+            for (let cell of cells) {
+                if (cell.textContent == itemId) {
+                    for (let cellForStyling of row.querySelectorAll("td")) {
+                        cellForStyling.style.setProperty("color", "lightgrey", "important");
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    function lendItems() {
+
+    }
+
+</script>
+
+
+<style type="text/css">
+
+</style>
+
+</html>
