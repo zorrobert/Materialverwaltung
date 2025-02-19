@@ -39,6 +39,10 @@ class Loan
     #[ORM\ManyToMany(targetEntity: Item::class, inversedBy: 'loans')]
     private Collection $items;
 
+    #[ORM\ManyToOne(inversedBy: 'loans')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $User = null;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -112,6 +116,18 @@ class Loan
     public function removeItem(Item $item): static
     {
         $this->items->removeElement($item);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): static
+    {
+        $this->User = $User;
 
         return $this;
     }

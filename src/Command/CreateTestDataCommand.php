@@ -89,6 +89,7 @@ class CreateTestDataCommand extends Command
         foreach ($testLoans as $name => $values) {
             $newLoan = new Loan();
             $newLoan->setStatus('requested');
+            $newLoan->setUser($userRepository->findOneBy(["username" => "testAdmin"]));
             foreach ($values["items"] as $item) {
                 $newLoan->addItem($item);
             }

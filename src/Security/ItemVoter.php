@@ -11,6 +11,8 @@ class ItemVoter extends Voter
 {
     const CREATE = 'create';
     const LIST = 'list';
+    const EDIT = 'edit';
+    const DELETE = 'delete';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -46,7 +48,8 @@ class ItemVoter extends Voter
 
         return match($attribute) {
             #self::VIEW => $this->canView($post, $user),
-            #self::EDIT => $this->canEdit($post, $user),
+            self::DELETE => $this->canDelete($user),
+            self::EDIT => $this->canEdit($user),
             self::CREATE => $this->canCreate($user),
             default => throw new \LogicException('This code should not be reached!')
         };
@@ -60,6 +63,22 @@ class ItemVoter extends Voter
         return false;
     }
 
+    private function canEdit(User $user): bool
+    {   
+        If(in_array('ROLE_ADMIN', $user->getRoles())){
+            return true; 
+        }
+        return false;
+    }
+
+    private function canDelete(User $user): bool
+    {   
+        If(in_array('ROLE_ADMIN', $user->getRoles())){
+            return true; 
+        }
+        return false;  
+    }
+
 //    private function canView(Post $post, User $user): bool
 //    {
 //        // if they can edit, they can view
@@ -71,9 +90,5 @@ class ItemVoter extends Voter
 //        return !$post->isPrivate();
 //    }
 //
-//    private function canEdit(Post $post, User $user): bool
-//    {
-//        // this assumes that the Post object has a `getOwner()` method
-//        return $user === $post->getOwner();
-//    }
+   
 }

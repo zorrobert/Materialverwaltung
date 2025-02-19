@@ -22,6 +22,10 @@ class LoanController extends AbstractController
         ValidatorInterface $validator
     ): BackendResponse
     {
+        if (!$this->isGranted('create')) {
+            throw new MissingInputException("not logged in");
+        }
+
         $request = Request::createFromGlobals()->getContent();
         //$request = '[{"startDate":"2025-01-16T03:03","endDate":"2025-01-30T01:01","items":[]}]';
         if (empty($request)) {
@@ -32,6 +36,7 @@ class LoanController extends AbstractController
 
         foreach ($loans as $loan) {
             $loan->setStatus('requested');
+            $loan->setUser($this->getUser());
         }
 
         $errors = $validator->validate($loans);
