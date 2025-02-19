@@ -9,14 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class SecurityController extends AbstractController
 {
-
     public function __construct(
         private SerializerInterface $serializer,
     )
@@ -71,11 +69,12 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/api/user/profile', name: 'app_user_profile')]
-    public function profile(
-        TokenInterface $token
-    ): BackendResponse
+    public function profile(): BackendResponse
     {
-        $user = $this->serializer->normalize($token->getUser());
+        if(empty($this->getUser())) {
+            return new BackendResponse("You are not logged in", 401);
+        };
+        $user = $this->serializer->normalize($this->getUser());
         $data = [
             "id" => $user["id"],
             "username" => $user["username"],
