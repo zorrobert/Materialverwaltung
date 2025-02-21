@@ -54,7 +54,13 @@ class LoanController extends AbstractController
     #[Route('/api/loan/list', name: 'app_loan_list')]
     public function list(EntityManagerInterface $em, SerializerInterface $serializer): BackendResponse
     {
-        $loans = $em->getRepository(Loan::class)->findAll();
+        $myLoans = Request::createFromGlobals()->query->get("myLoans");
+
+        if ($myLoans === "true") {
+            $loans = $em->getRepository(Loan::class)->findBy(["User" => $this->getUser()]);
+        } else {
+            $loans = $em->getRepository(Loan::class)->findAll();
+        }
 
         $list = $serializer->normalize($loans);
 

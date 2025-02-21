@@ -48,7 +48,7 @@ class ItemController extends AbstractController
     }
 
     #[Route('/api/item/list', name: 'app_api_item_list')]
-    public function list(): Response # BackendResponse
+    public function list(): BackendResponse
     {
         $loanRepository = $this->em->getRepository(Loan::class);
         $itemRepository = $this->em->getRepository(Item::class);
