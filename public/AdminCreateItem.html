@@ -1,0 +1,119 @@
+<h1>Create Item</h1>
+
+<h2>Values</h2>
+
+<form id="form">
+    <p>
+        <label for="name">name: </label>
+        <input id="name" type="text">
+    </p>
+    <p>
+        <label for="description">description: </label>
+        <input id="description" type="text">
+    </p>
+    <p>
+        <label for="inventoryId">inventoryId: </label>
+        <input id="inventoryId" type="text">
+    </p>
+
+    <!-- <p>
+        <label for="name">Itemname: </label>
+        <input id="name" type="text">
+    </p>
+
+    <p>
+        <label for="category">Category: </label>
+        <select id="category" type="text"></select>
+    </p>
+    <p>
+        <label for="amount">Amount: </label>
+        <input id="amount" type="number">
+    </p> -->
+    <input type="submit" id="submit" value="Submit" />
+</form>
+
+<h2>Request</h2>
+
+<p id="request"></p>
+
+<h2>Response</h2>
+
+<p id="response"></p>
+
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+       fetchCategories();
+    })
+let fetchedData;
+    async function fetchCategories() {
+        fetch('/api/item/list', {
+            method: 'POST',          
+          })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Something went wrong!");
+            }
+            return response.json()
+        })
+        .then((data) => {
+            fetchedData = data
+            console.log(data)
+
+            appendCategories()
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    const catergoryForm = querySelector('#category')
+
+    function appendCategories(fetchedData)  {
+        fetchedData.forEach(element => {
+            console.log(element)
+        });
+    }
+
+    const form = document.querySelector("#form");
+
+    form.addEventListener("submit", (event) => {
+        // prevent the normal form submit
+        event.preventDefault();
+
+        // get data from fields
+        let requestBody = JSON.stringify(
+            [
+                {
+                    "name": document.getElementById('name').value,
+                    "description": document.getElementById('description').value,
+                    "inventoryId": document.getElementById('inventoryId').value,
+               
+                    // "name": document.getElementById('name').value,
+                    // "category": document.getElementById('category').value,
+                    // "amount": document.getElementById('amount').value,
+                }
+            ]
+        );
+
+        sendData(requestBody);
+    });
+
+    async function sendData(requestBody) {
+        // set request data as content for request field
+        document.getElementById('request').innerHTML = requestBody;
+
+        try {
+            console.log("Request: "+requestBody);
+            const response = await fetch("/api/item/create", {
+                method: "POST",
+                body: requestBody
+            });
+            let serverResponse = await response.json()
+            console.log(serverResponse);
+            document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
+        } catch (e) {
+            console.error(e);
+            document.getElementById('response').innerHTML = JSON.stringify(e);
+        }
+    }
+</script>
