@@ -1,9 +1,9 @@
 { pkgs, lib, config, inputs, ... }:
 let
-  dbUser = "material";
-  dbPassword = "material";
-  dbName = "material";
-  dbPort = "3306";
+#   dbUser = "material";
+#   dbPassword = "material";
+#   dbName = "material";
+#   dbPort = "3306";
   host = "127.0.0.1";
 in
 {
@@ -14,15 +14,15 @@ in
     symfony-cli
   ];
 
-  enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
+  #enterShell = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
 
   scripts = {
-    load-db.exec = ''
-      echo "Make sure devenv up is running in another window."
-      echo "Importing Database..."
-      mysql -u material -pmaterial material < ./src/database.sql
-      echo "Imported Database."
-    '';
+#     load-db.exec = ''
+#       echo "Make sure devenv up is running in another window."
+#       echo "Importing Database..."
+#       mysql -u material -pmaterial material < ./src/database.sql
+#       echo "Imported Database."
+#     '';
     caddy-allow-port.exec = ''sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0'';
   };
 
@@ -42,7 +42,8 @@ in
 
   env = {
     APP_URL = "http://${host}";
-    DATABASE_URL="mysql://material:material@127.0.0.1:3306/material?serverVersion=10.11.2-MariaDB&charset=utf8mb4";
+    #DATABASE_URL="mysql://material:material@127.0.0.1:3306/material?serverVersion=10.11.2-MariaDB&charset=utf8mb4";
+    DATABASE_URL="sqlite:///%kernel.project_dir%/var/app.db";
     # DATABASE_URL = "mysql://${dbUser}:${dbPassword}@${host}:${dbPort}/${dbName}?serverVersion=8.0.32&charset=utf8mb4";
     #DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4"
   };
@@ -70,17 +71,17 @@ in
         '';
       };
     };
-    mysql = {
-      enable = true;
-      initialDatabases = [ { name = dbName; } ];
-      ensureUsers = [ {
-        name = dbUser;
-        password = dbPassword;
-        ensurePermissions = { "*.*" = "ALL PRIVILEGES"; };
-      }];
-      settings.mysqld = {
-        port = dbPort;
-      };
-    };
+#     mysql = {
+#       enable = true;
+#       initialDatabases = [ { name = dbName; } ];
+#       ensureUsers = [ {
+#         name = dbUser;
+#         password = dbPassword;
+#         ensurePermissions = { "*.*" = "ALL PRIVILEGES"; };
+#       }];
+#       settings.mysqld = {
+#         port = dbPort;
+#       };
+#     };
   };
 }
