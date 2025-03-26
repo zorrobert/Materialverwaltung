@@ -14,7 +14,7 @@
 
 <body>
     <div class="container" id="MainPage">
-        <div class="sidebar d-flex flex-column align-items-center">
+        <div id="sidebar" class="sidebar d-flex flex-column align-items-center">
             <div class="logo-container mb-3">
                 <img src="Website_LogoV2.jpg" alt="Logo" class="img-fluid">
             </div>
@@ -31,8 +31,8 @@
                 <i class="fa fa-user fa-2x"></i>
             </a>
         </div>
-        <div class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
-            <div class="profile-container">
+        <div id="content" class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
+            <div id="profile-container" class="profile-container">
                 <h2 class="text-center">Profil</h2>
                 <form id="form">
                     <div class="row">
@@ -75,7 +75,7 @@
                     </div>
                 </form>
             </div>
-            <div class="orders-container mt-4 ">
+            <div id="orders-container" class="orders-container mt-4 ">
                 <h3 id="OrderHeader" class="text-center">Bestellungen
                 </h3>
                 <button id="addOrder" class="btn btn-secondary  mt-3">add Order</button>
@@ -88,33 +88,33 @@
 </body>
 <script>
     document.getElementById("deleteOrder").addEventListener("click", function () {
-    // Alle Checkboxen innerhalb der OrderBox auswählen
-    var checkboxes = document.querySelectorAll("#OrderBox input[type='checkbox']");
-    
-    checkboxes.forEach(function (checkbox) {
-        if (checkbox.checked) {
-            checkbox.closest(".order").remove();
-            // let orderElement = checkbox.closest(".order");
-            // let orderId = orderElement.getAttribute("data-order-id");
-            
-            // // Anfrage an das Backend senden
-            // fetch("/deleteOrder", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify({ orderId: orderId })
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log("Server Response:", data);
-            //     // Element aus dem DOM entfernen
-            //     orderElement.remove();
-            // })
-            // .catch(error => console.error("Error deleting order:", error));
-        }
+        // Alle Checkboxen innerhalb der OrderBox auswählen
+        var checkboxes = document.querySelectorAll("#OrderBox input[type='checkbox']");
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkbox.closest(".order").remove();
+                // let orderElement = checkbox.closest(".order");
+                // let orderId = orderElement.getAttribute("data-order-id");
+
+                // // Anfrage an das Backend senden
+                // fetch("/deleteOrder", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json"
+                //     },
+                //     body: JSON.stringify({ orderId: orderId })
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log("Server Response:", data);
+                //     // Element aus dem DOM entfernen
+                //     orderElement.remove();
+                // })
+                // .catch(error => console.error("Error deleting order:", error));
+            }
+        });
     });
-});
     document.getElementById("addOrder").addEventListener("click", function () {
 
         // Neues Element erstellen
@@ -166,6 +166,83 @@
         document.getElementById("save").style.display = "none";
 
     });
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!isUserLoggedIn()) {
+            // Versteckt den Haupt-Content-Bereich
+            document.getElementById("profile-container").style.display = "none";
+            document.getElementById("orders-container").style.display = "none";
+
+            // Erstellt das Login-Formular dynamisch
+            // let loginContainer = document.createElement("div");
+            // loginContainer.id = "loginContainer";
+            // loginContainer.className = "loginContainer";
+            // loginContainer.innerHTML = `
+            // <a href="login">--Login--</a>`;
+            let loginContainer = document.createElement("div");
+            loginContainer.id = "loginContainer";
+            loginContainer.className = "loginContainer";
+            loginContainer.innerHTML = `
+            <h2>Login erforderlich</h2>
+            <form id="loginForm" class="mt-3">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Benutzername</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Passwort</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        
+        `;
+
+            document.getElementById("content").appendChild(loginContainer);
+
+            // Event Listener für das Login-Formular
+            document.getElementById("loginForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                let username = document.getElementById("username").value;
+                let password = document.getElementById("password").value;
+
+                if (authenticateUser(username, password)) {
+                    sessionStorage.setItem("loggedIn", "true"); // Speichert den Login-Zustand
+                    loginContainer.remove();
+                    document.getElementById("profile-container").style.display = "block";
+                    document.getElementById("orders-container").style.display = "block";
+                    showLogoutButton();
+                } else {
+                    alert("Falscher Benutzername oder Passwort");
+                }
+            });
+        }else {
+        showLogoutButton();
+    }
+    });
+
+    function isUserLoggedIn() {
+        return sessionStorage.getItem("loggedIn") === "true";
+    }
+
+    function authenticateUser(username, password) {
+        // Simulierter Login, hier kann eine API-Anfrage erfolgen
+        return username === "admin" && password === "password123";
+    }
+    function showLogoutButton() {
+    let logout = document.createElement("a");
+    logout.title = "Logout";
+    logout.className = "nav-link py-3";
+    logout.innerHTML = `
+        <button id="logoutButton" class="btn btn-secondary">Logout</button>
+    `;
+    document.getElementById("sidebar").appendChild(logout);
+
+    document.getElementById("logoutButton").addEventListener("click", function () {
+        sessionStorage.removeItem("loggedIn");
+        location.reload();
+    });
+}
+
     //     async function loadProfileData() {
     //     try {
     //         let response = await fetch("https://dein-backend.de/api/profile");
@@ -262,3 +339,21 @@
 </script>
 
 </html>
+<!-- // Erstellt das Login-Formular dynamisch
+            let loginContainer = document.createElement("div");
+            loginContainer.id = "loginContainer";
+            loginContainer.className = "loginContainer";
+            loginContainer.innerHTML = `
+            <h2>Login erforderlich</h2>
+            <form id="loginForm" class="mt-3">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Benutzername</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Passwort</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        `; -->
