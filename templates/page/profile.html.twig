@@ -3,130 +3,130 @@
 {% block title %}Profil{% endblock %}
 
 {% block content %}
-{% if app.user %}
-<div id="content" class="container d-flex flex-column" style="margin-left: 5rem; margin-right: 5rem;">
-    <div id="profile-container" class="profile-container">
-        <h2 class="text-center">Profil</h2>
-        <form id="form">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="gender">Geschlecht:</label>
-                    <select id="gender" class="form-control" disabled>
-                        {# <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Männlich</option>
-                        <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Weiblich</option>
-                        <option value="divers" {% if user.gender == 'divers' %}selected{% endif %}>Divers</option> #}
-                    </select>
-                    <label for="fname">Vorname:</label>
-                    <input type="text" id="fname" class="form-control" value="{{ user.firstName }}" disabled>
-                    <label for="lname">Nachname:</label>
-                    <input type="text" id="lname" class="form-control" value="{{ user.lastName }}" disabled>
-                    <label for="birthday">Geburtsdatum:</label>
-                    <input type="date" id="birthday" class="form-control" value="{{ user.birthday }}" disabled>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
+    {% if app.user %}
+        <div id="profile-container" class="profile-container">
+            <h2 class="text-center">Profil</h2>
+            <form id="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="gender">Geschlecht:</label>
+                        <select id="gender" class="form-control" disabled>
+                            <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Männlich</option>
+                            <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Weiblich</option>
+                            <option value="divers" {% if user.gender == 'divers' %}selected{% endif %}>Divers</option>
+                        </select>
+                        <label for="fname">Vorname:</label>
+                        <input type="text" id="fname" class="form-control" value="{{ user.firstName }}" disabled>
+                        <label for="lname">Nachname:</label>
+                        <input type="text" id="lname" class="form-control" value="{{ user.lastName }}" disabled>
+                        <label for="birthday">Geburtsdatum:</label>
+                        <input type="date" id="birthday" class="form-control" value="{{ user.birthday }}" disabled>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phonenumber">Telefonnummer:</label>
+                        <input type="text" id="phonenumber" class="form-control" value="{{ user.phone }}" disabled>
+                        <label for="street">Straße:</label>
+                        <input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
+                        <label for="streetno">Hausnummer:</label>
+                        <input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}"
+                               disabled>
+                        <label for="residence">Wohnort:</label>
+                        <input type="text" id="residence" class="form-control" value="{{ user.city }}" disabled>
+                        <label for="zipcode">Postleitzahl:</label>
+                        <input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="phonenumber">Telefonnummer:</label>
-                    <input type="text" id="phonenumber" class="form-control" value="{{ user.phone }}" disabled>
-                    <label for="street">Straße:</label>
-                    <input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
-                    <label for="streetno">Hausnummer:</label>
-                    <input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}" disabled>
-                    <label for="residence">Wohnort:</label>
-                    <input type="text" id="residence" class="form-control" value="{{ user.city }}" disabled>
-                    <label for="zipcode">Postleitzahl:</label>
-                    <input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
+                <div class="row">
+                    <div class="col-md-3 align-content-center">
+                        <button id="change" type="button" class="btn btn-secondary mt-3">Bearbeiten</button>
+                    </div>
+                    <div class="col-md-9">
+                        <button id="save" type="submit" class="btn btn-primary mt-3">Speichern</button>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-content-center">
-                    <button id="change" type="button" class="btn btn-secondary mt-3">Bearbeiten</button>
-                </div>
-                <div class="col-md-9">
-                    <button id="save" type="submit" class="btn btn-primary mt-3">Speichern</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div id="orders-container" class="orders-container mt-4">
-        <h3 id="OrderHeader" class="text-center">Bestellungen</h3>
-        <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
-        <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
-        <div class="scrollbox" id="OrderBox">
-            {# Dynamisch bestellte Orders können hier per JavaScript oder Twig-Schleife eingebunden werden #}
+            </form>
         </div>
-    </div>
-</div>
-{% else %}
-{{ render(controller('App\\Controller\\SecurityController::login', {}))}}
-{% endif %}
+        <div id="orders-container" class="orders-container mt-4">
+            <h3 id="OrderHeader" class="text-center">Bestellungen</h3>
+            <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
+            <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
+            <div class="scrollbox" id="OrderBox">
+                Dynamisch bestellte Orders können hier per JavaScript oder Twig-Schleife eingebunden werden
+            </div>
+        </div>
+    {% else %}
+{#        {{ render(controller('App\\Controller\\SecurityController::login', {})) }}#}
+        <a href="/login">Please login</a>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    document.getElementById("deleteOrder").addEventListener("click", function () {
-        var checkboxes = document.querySelectorAll("#OrderBox input[type='checkbox']");
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                checkbox.closest(".order").remove();
-            }
+    <script>
+        document.getElementById("deleteOrder").addEventListener("click", function () {
+            var checkboxes = document.querySelectorAll("#OrderBox input[type='checkbox']");
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    checkbox.closest(".order").remove();
+                }
+            });
         });
-    });
-    document.getElementById("addOrder").addEventListener("click", function () {
-        var neueBestellung = document.createElement('div');
-        neueBestellung.className = 'order row';
+        document.getElementById("addOrder").addEventListener("click", function () {
+            var neueBestellung = document.createElement('div');
+            neueBestellung.className = 'order row';
 
-        var checkboxCol = document.createElement('p');
-        checkboxCol.className = 'col';
-        neueBestellung.appendChild(checkboxCol);
+            var checkboxCol = document.createElement('p');
+            checkboxCol.className = 'col';
+            neueBestellung.appendChild(checkboxCol);
 
-        var checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkboxCol.appendChild(checkbox);
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkboxCol.appendChild(checkbox);
 
-        var bestellungsNummer = document.createElement('p');
-        bestellungsNummer.className = 'col';
-        bestellungsNummer.textContent = 'Bestellungsnummer: 12345';
-        neueBestellung.appendChild(bestellungsNummer);
+            var bestellungsNummer = document.createElement('p');
+            bestellungsNummer.className = 'col';
+            bestellungsNummer.textContent = 'Bestellungsnummer: 12345';
+            neueBestellung.appendChild(bestellungsNummer);
 
-        var bestellungsDatum = document.createElement('p');
-        bestellungsDatum.className = 'col';
-        bestellungsDatum.textContent = 'Datum: 30.01.2025';
-        neueBestellung.appendChild(bestellungsDatum);
+            var bestellungsDatum = document.createElement('p');
+            bestellungsDatum.className = 'col';
+            bestellungsDatum.textContent = 'Datum: 30.01.2025';
+            neueBestellung.appendChild(bestellungsDatum);
 
-        var bestellungsStatus = document.createElement('p');
-        bestellungsStatus.className = 'col';
-        bestellungsStatus.textContent = 'Status: In Bearbeitung';
-        neueBestellung.appendChild(bestellungsStatus);
+            var bestellungsStatus = document.createElement('p');
+            bestellungsStatus.className = 'col';
+            bestellungsStatus.textContent = 'Status: In Bearbeitung';
+            neueBestellung.appendChild(bestellungsStatus);
 
-        document.getElementById('OrderBox').appendChild(neueBestellung);
-    });
-    document.getElementById("change").addEventListener("click", function () {
-        let inputs = document.querySelectorAll("input");
-        inputs.forEach(function (input) {
-            input.disabled = false;
+            document.getElementById('OrderBox').appendChild(neueBestellung);
         });
-        document.getElementById("gender").disabled = false;
-        document.getElementById("save").style.display = "inline-block";
-    });
-    document.getElementById("save").addEventListener("click", function (event) {
-        let inputs = document.querySelectorAll("input");
-        inputs.forEach(function (input) {
-            input.style.pointerEvents = "none";
+        document.getElementById("change").addEventListener("click", function () {
+            let inputs = document.querySelectorAll("input");
+            inputs.forEach(function (input) {
+                input.disabled = false;
+            });
+            document.getElementById("gender").disabled = false;
+            document.getElementById("save").style.display = "inline-block";
         });
-        document.getElementById("save").style.display = "none";
-    });
-    
-    function showLogoutButton() {
-        let logout = document.createElement("a");
-        logout.title = "Logout";
-        logout.className = "nav-link py-3";
-        logout.innerHTML = `<button id="logoutButton" class="btn btn-secondary">Logout</button>`;
-        document.getElementById("sidebar").appendChild(logout);
-        document.getElementById("logoutButton").addEventListener("click", function () {
-            sessionStorage.removeItem("loggedIn");
-            location.reload();
+        document.getElementById("save").addEventListener("click", function (event) {
+            let inputs = document.querySelectorAll("input");
+            inputs.forEach(function (input) {
+                input.style.pointerEvents = "none";
+            });
+            document.getElementById("save").style.display = "none";
         });
-    }
-</script>
+
+        function showLogoutButton() {
+            let logout = document.createElement("a");
+            logout.title = "Logout";
+            logout.className = "nav-link py-3";
+            logout.innerHTML = `<button id="logoutButton" class="btn btn-secondary">Logout</button>`;
+            document.getElementById("sidebar").appendChild(logout);
+            document.getElementById("logoutButton").addEventListener("click", function () {
+                sessionStorage.removeItem("loggedIn");
+                location.reload();
+            });
+        }
+    </script>
 {% endblock %}

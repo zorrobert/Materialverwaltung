@@ -21,12 +21,12 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: /Home.html
+                default_target_path: /home
                 enable_csrf: true
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: /Home.html
+                target: /home
                 # target: app_any_route
 
             # activate different ways to authenticate

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .blog-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+        .content p{
+            background: rgb(182, 180, 180);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            justify-content: space-evenly;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="blog-container">
+        <h1 class="header" style="text-align: center ">Herzlich Willkommen</h1>
+        <div>
+            <p style="text-align: center;">Hier werden Neuigkeiten angezeigt</p>
+        </div>
+        <div class="content">
+            <p>
+                31.01.25: Neues Finales Design!!!
+            </p>
+            <p>
+                03.12.24: Profilseite mit Layout angepasst
+            </p>
+            <p>
+                25.11.24: Materialliste mit Kalender Funktion wurde hinzugefügt
+            </p>
+        </div>
+    </div>
+{% endblock %}

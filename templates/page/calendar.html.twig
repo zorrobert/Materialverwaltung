@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kalender{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="kalender-container">
+        <h1 class="header" style="text-align: center ">Kalender</h1>
+        <div class="content">
+            <div id="calendar"></div>
+
+            <button onclick="removeHighlightning()">remove highlightning</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            createCalendar();
+        })
+
+        let fetchedData;
+        let selectedStartDate = null;
+        let selectedEndDate = null;
+
+        let currentStartTmp = null;
+        let currentEndTmp = null;
+
+        function createCalendar() {
+
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                events: [],
+                dateClick: function (info) {
+                    console.log("info", info)
+                    if (currentStartTmp !== null) {
+                        if (currentStartTmp !== selectedStartDate) {
+                            console.log("2nd select")
+                            console.log(info.date)
+                            removeHighlightning(info.date)
+                        }
+                    }
+
+
+                    if (!selectedStartDate) {
+                        selectedStartDate = info.date;
+                        alert(`Start selected ${selectedStartDate}`);
+                    } else {
+                        selectedEndDate = info.date;
+                        console.log("end date" + selectedEndDate)
+                        if (selectedEndDate < selectedStartDate) {
+                            alert("your end date cant be before start date")
+                            selectedStartDate = null;
+                            selectedEndDate = null;
+                        } else {
+
+
+                            console.log(selectedStartDate),
+                                console.log(selectedEndDate)
+                            currentStartTmp = selectedStartDate
+                            currentEndTmp = selectedEndDate
+                            // calendar.addEvent({
+                            //     title: "New long event",
+                            //     start: selectedStartDate,
+                            //     end: new Date(info.end),
+                            //     color: 'green'
+                            // })
+                            // alert("new long event")
+                            selectedEndDate.setHours(12, 0, 0, 0)
+                            selectedStartDate.setHours(12, 0, 0, 0)
+
+
+
+                            getDatesInRange(selectedStartDate, selectedEndDate)
+
+
+                            selectedStartDate = null;
+                            selectedEndDate = null;
+                        }
+                    }
+
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth'
+                }
+            });
+
+            calendar.render();
+        }
+
+        function highlightCells(date) {
+            console.log("date for highlight", date)
+            date = date.toISOString().split('T')[0]
+            let dateCell = document.querySelector(`[data-date="${date}"]`);
+
+            const bgDiv = dateCell.querySelector('.fc-daygrid-day-bg')
+            const highlightDiv = document.createElement('div')
+            highlightDiv.classList.add('fc-highlight')
+            bgDiv.appendChild(highlightDiv)
+
+        }
+
+        function getDatesInRange(selectedStartDate, selectedEndDate) {
+            let currentDate = selectedStartDate;
+            while (selectedStartDate <= selectedEndDate) {
+                highlightCells(currentDate)
+                currentDate.setDate(currentDate.getDate() + 1)
+            }
+        }
+
+        function removeHighlightning(selectedStartDate) {
+            if (selectedStartDate) {
+                let currentDateCell = selectedStartDate.setHours(12, 0, 0, 0)
+                console.log("cur date cell", currentDateCell)
+                highlightCells(currentDateCell)
+            } else {
+
+                // console.log(bgDiv)
+                let highlightedCells = document.querySelectorAll('.fc .fc-highlight');
+                console.log(highlightedCells[0])
+                for (let i = 0; i < highlightedCells.length; i++) {
+                    highlightedCells[i].style = "background: white !important";
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .fc-toolbar-chunk:last-child {
+            display: none !important;
+        }
+
+        .fc-today-button {
+            display: none !important;
+        }
+
+        #fc-dom-1 {
+            font-size: 1.5rem !important;
+        }
+
+        .fc .fc-toolbar.fc-header-toolbar {
+            margin-bottom: 2% !important;
+        }
+    </style>
+{% endblock %}
