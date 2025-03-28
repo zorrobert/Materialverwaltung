@@ -5,22 +5,101 @@
 {% block content %}
 
 {% if app.user %}
-    <table>
-        <thead>
+<table>
+    <thead>
         <tr>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Material</th>
+            <th>Status</th>
+            <th>Menge</th>
+            <th>Verliehen von</th>
+            <th>Verliehen bis</th>
+            <th>Menge zu verleihen</th>
+            <th>Ausleihen</th>
         </tr>
-        </thead>
-        <tbody>
-        {% for item in items %}
+    </thead>
+    <tbody>
+        {% set today = "now"|date("Y-m-d") %}
+        
+        {# Custom sorting using the "sort" filter on name #}
+        {% set sorted_items = items|sort((a, b) => a.name <=> b.name) %}
+        
+        {% for item in sorted_items %}
+            {% set is_available_today = false %}
+            {% set has_valid_loan = false %}
+            
+            {# Check if the item has loans and if any of them are valid #}
+            {% for loan in item.getLoans() %}
+                {% if loan.getStartDate() is not null and loan.getEndDate() is not null %}
+                    {% set start_date = loan.getStartDate()|date("Y-m-d") %}
+                    {% set end_date = loan.getEndDate()|date("Y-m-d") %}
+                    
+                    {# Check if the loan is valid for today (startDate <= today and endDate >= today) #}
+                    {% if start_date <= today and end_date >= today %}
+                        {% set is_available_today = false %}
+                        {% set has_valid_loan = true %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            {# If no valid loans, the item is available today #}
+            {% if not has_valid_loan %}
+                {% set is_available_today = true %}
+            {% endif %}
+            
             <tr>
                 <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
+                <td>
+                    {% if is_available_today %}
+                        Verfügbar
+                    {% else %}
+                        Verliehen
+                    {% endif %}
+                </td>
+                {# <td> #}
+                    {# Display loan IDs or any other properties of the Loan entity #}
+                    {# {% for loan in item.getLoans() %} #}
+                        {# {{ loan.id }}{% if not loop.last %}, {% endif %} #}
+                    {# {% endfor %} #}
+                {# </td> #}
+                {# <td>{{ item.id }}</td> #}
+                <td>
+                    {% if item.description %}
+                        {{ item.description }}
+                    {% else %}
+                        Keine Beschreibung
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.getLoans() is not empty %}
+                        {{ item.getLoans()[0].getStartDate()|date("Y-m-d H:i:s") }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.getLoans() is not empty %}
+                        {{ item.getLoans()[0].getEndDate()|date("Y-m-d H:i:s") }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.getLoans() is not empty %}
+                        {% set available_quantity = item.getLoans()|length %}
+                        {{ available_quantity }}
+                    {% else %}
+                        Keine Menge zu verleihen
+                    {% endif %}
+                </td>
+                <td>
+                    <input type="checkbox" name="" id="">
+                </td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
+
+
 {% else %}
     not logged in
 {% endif %}
