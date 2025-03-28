@@ -4,7 +4,7 @@
 
 {% block content %}
     {% if app.user %}
-        <div id="profile-container" class="profile-container">
+        <div id="profile-container" class="content-container">
             <h2 class="text-center">Profil</h2>
             <form id="form">
                 <div class="row">
@@ -48,7 +48,7 @@
                 </div>
             </form>
         </div>
-        <div id="orders-container" class="orders-container mt-4">
+        <div id="orders-container" class="content-container mt-4">
             <h3 id="OrderHeader" class="text-center">Bestellungen</h3>
             <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
             <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
@@ -56,10 +56,39 @@
                 Dynamisch bestellte Orders können hier per JavaScript oder Twig-Schleife eingebunden werden
             </div>
         </div>
-    {% else %}
-{#        {{ render(controller('App\\Controller\\SecurityController::login', {})) }}#}
-        <a href="/login">Please login</a>
     {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .btn-primary {
+            width: 100%;
+        }
+        #save {
+            display: none;
+        }
+        .order.row p {
+            text-align: center;
+            justify-items: center;
+        }
+        #OrderBox {
+            height: 250px;
+            margin: 5px;
+            padding: 10px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .order.row {
+            background: rgb(182, 180, 180);
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+        }
+        #logoutButtop{
+            background-color: aqua;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
