@@ -98,7 +98,7 @@ class PageController extends AbstractController
         return $this->render('page/profile.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-            'user' => $data,
+            'user' => $user,
         ]);
     }
 }

@@ -9,12 +9,6 @@
             <form id="form">
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="gender">Geschlecht:</label>
-                        <select id="gender" class="form-control" disabled>
-                            <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Männlich</option>
-                            <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Weiblich</option>
-                            <option value="divers" {% if user.gender == 'divers' %}selected{% endif %}>Divers</option>
-                        </select>
                         <label for="fname">Vorname:</label>
                         <input type="text" id="fname" class="form-control" value="{{ user.firstName }}" disabled>
                         <label for="lname">Nachname:</label>
@@ -23,10 +17,10 @@
                         <input type="date" id="birthday" class="form-control" value="{{ user.birthday }}" disabled>
                         <label for="email">Email:</label>
                         <input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
-                    </div>
-                    <div class="col-md-6">
                         <label for="phonenumber">Telefonnummer:</label>
                         <input type="text" id="phonenumber" class="form-control" value="{{ user.phone }}" disabled>
+                    </div>
+                    <div class="col-md-6">
                         <label for="street">Straße:</label>
                         <input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
                         <label for="streetno">Hausnummer:</label>
