@@ -27,9 +27,7 @@ class PageController extends AbstractController
     #[Route('/home', name: 'app_page_home')]
     public function home(): Response
     {
-        return $this->render('page/home.html.twig', [
-            #'user' => $data,
-        ]);
+        return $this->render('page/home.html.twig');
     }
 
     #[Route('/material', name: 'app_page_material')]
@@ -76,24 +74,6 @@ class PageController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         $user = $this->getUser();
-
-        if (empty($user)) {
-            $data = [];
-        } else {
-            $data = [
-                'name' => $user->getUserIdentifier(),
-                'gender' => 'test',
-                'firstName' => 'Vorname',
-                'lastName' => 'Nachname',
-                'birthday' => '2005-05-20',
-                'email' => 'test@example.com',
-                'phone' => 'Telefonnummer',
-                'street' => 'straße',
-                'streetNumber' => 'hausnummer',
-                'city' => 'Telefonnummer',
-                'zipcode' => 'Postleitzahl',
-            ];
-        }
 
         return $this->render('page/profile.html.twig', [
             'last_username' => $lastUsername,
