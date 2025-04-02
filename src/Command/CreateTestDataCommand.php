@@ -72,6 +72,9 @@ class CreateTestDataCommand extends Command
                 'roles' => [ 'ROLE_ADMIN' ],
                 'birthday' => new \DateTimeImmutable('1-4-2021'),
             ],
+            'testAdmin' => [
+                'roles' => [ 'ROLE_ADMIN' ],
+            ],
             'testValidator' => [
                 'roles' => [ 'ROLE_VALIDATOR' ],
             ],
