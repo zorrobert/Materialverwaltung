@@ -36,28 +36,51 @@ class CreateTestDataCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        # create test users
+        # creating users
+        $io->info("Creating sample users...");
         $userRepository = $this->em->getRepository(User::class);
-        $testUsers = [
-            "testUser" => "ROLE_USER",
-            "testValidator" => "ROLE_VALIDATOR",
-            "testAdmin" => "ROLE_ADMIN",
-            #"testManager", "testAuditor"
+        $users = [
+            'robert' => [
+                'firstName' => 'Robert',
+                'lastName' => 'Lotz',
+                'phone' => '',
+                'password' => 'robert',
+                'roles' => [ 'ROLE_ADMIN', 'ROLE_VALIDATOR' ],
+                'birthday' => new \DateTimeImmutable('1-4-2021'),
+            ],
+            'testValidator' => [
+                'roles' => [ 'ROLE_VALIDATOR' ],
+            ],
+            'testUser' => [
+                'roles' => [ 'ROLE_USER' ],
+            ],
         ];
+        foreach ($users as $username => $properties) {
+            $user = $userRepository->findOneBy(['username' => $username]) ?? new User();
+            $user->setUsername($username);
 
-        foreach ($testUsers as $name => $role) {
-            # check if user already exists
-            if (empty($userRepository->findOneBy(["username" => $name]))) {
-                $newUser = new User();
-                $newUser->setRoles([$role]);
-                $newUser->setUsername($name);
-                $hashedPassword = $this->userPasswordHasher->hashPassword($newUser, $name);
-                $newUser->setPassword($hashedPassword);
-                $this->em->persist($newUser);
-            }
+            # get user info from array, set defaults if empty
+            $password = $properties['password'] ?? 'material';
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
+            $user->setRoles($properties['roles'] ?? [ 'ROLE_USER' ]);
+            # personal data
+            $user->setFirstName($properties['firstName'] ?? 'Max');
+            $user->setLastName($properties['lastName'] ?? 'Mustermann');
+            $user->setBirthday($properties['birthday'] ?? new \DateTimeImmutable('now'));
+            # contact data
+            $user->setPhone($properties['phone'] ?? '+49 42');
+            $user->setEmail($properties['email'] ?? 'muster@mail.de');
+            # location data
+            $user->setCity($properties['city'] ?? 'Musterstadt');
+            $user->setStreet($properties['street'] ?? 'Musterstraße');
+            $user->setStreetNumber($properties['streetNumber'] ?? '42');
+            $user->setZipcode($properties['zipCode'] ?? '04242');
+
+            $this->em->persist($user);
         }
+        //dd('exit dev');
         $this->em->flush();
-        $io->success('Successfully created the following users: '.implode(", ", array_keys($testUsers)));
+        $io->success('Successfully created the following users: '.implode(", ", array_keys($users)));
 
         # create test items
         $itemRepository = $this->em->getRepository(Item::class);

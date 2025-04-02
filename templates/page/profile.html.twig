@@ -14,7 +14,7 @@
                         <label for="lname">Nachname:</label>
                         <input type="text" id="lname" class="form-control" value="{{ user.lastName }}" disabled>
                         <label for="birthday">Geburtsdatum:</label>
-                        <input type="date" id="birthday" class="form-control" value="{{ user.birthday }}" disabled>
+                        <input type="date" id="birthday" class="form-control" value="{{ user.birthday|date('Y-m-d') }}" disabled>
                         <label for="email">Email:</label>
                         <input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
                         <label for="phonenumber">Telefonnummer:</label>
@@ -35,6 +35,7 @@
                 <div class="row">
                     <div class="col-md-3 align-content-center">
                         <button id="change" type="button" class="btn btn-secondary mt-3">Bearbeiten</button>
+                        <button id="logout" type="submit" class="btn btn-secondary mt-3" formaction="/logout">Logout</button>
                     </div>
                     <div class="col-md-9">
                         <button id="save" type="submit" class="btn btn-primary mt-3">Speichern</button>
@@ -139,17 +140,5 @@
             });
             document.getElementById("save").style.display = "none";
         });
-
-        function showLogoutButton() {
-            let logout = document.createElement("a");
-            logout.title = "Logout";
-            logout.className = "nav-link py-3";
-            logout.innerHTML = `<button id="logoutButton" class="btn btn-secondary">Logout</button>`;
-            document.getElementById("sidebar").appendChild(logout);
-            document.getElementById("logoutButton").addEventListener("click", function () {
-                sessionStorage.removeItem("loggedIn");
-                location.reload();
-            });
-        }
     </script>
 {% endblock %}
