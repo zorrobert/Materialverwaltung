@@ -47,7 +47,32 @@
             <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
             <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
             <div class="scrollbox" id="OrderBox">
-                Dynamisch bestellte Orders können hier per JavaScript oder Twig-Schleife eingebunden werden
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Ausleihe</th>
+                        <th>Verliehen von:</th>
+                        <th>Verliehen bis:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set test = 1 %}
+                    {% for loan in app.user.getLoans() %}
+                        <tr>
+                            <td>
+                                <p class="col">{{ test }}</p>
+                                {% set test = test + 1 %}
+                            </td>
+                            <td>
+                                <p class="col">{{ loan.startDate.format('Y-m-d H:i:s') }}</p>
+                            </td>
+                            <td>
+                                <p class="col">{{ loan.endDate.format('Y-m-d H:i:s') }}</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     {% endif %}
