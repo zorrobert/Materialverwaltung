@@ -6,14 +6,14 @@
 
 {% if app.user %}
 <div>  
-<p>
-    <label for="startDate">Start Date:</label>
-    <input id="startDate" type="date" required>
-</p>
-<p>
-    <label for="endDate">End Date:</label>
-    <input id="endDate" type="date" required>
-</p>
+    <p>
+        <label for="startDate">Start Date:</label>
+        <input id="startDate" type="date" required>
+    </p>
+    <p>
+        <label for="endDate">End Date:</label>
+        <input id="endDate" type="date" required>
+    </p>
 </div>
 <table>
     <thead>
@@ -28,33 +28,30 @@
     </thead>
     <tbody>
         {% set today = "now"|date("Y-m-d") %}
+        
+        {% set start_date_input = app.request.get('startDate') or today %}
+        {% set end_date_input = app.request.get('endDate') or today %}
 
         {% set sorted_items = items|sort((a, b) => a.name <=> b.name) %}
 
         {% for item in sorted_items %}
-            {% set is_available_today = false %}
-            {% set has_valid_loan = false %}
+            {% set is_available = true %}
 
             {% for loan in item.getLoans() %}
                 {% if loan.getStartDate() is not null and loan.getEndDate() is not null %}
-                    {% set start_date = loan.getStartDate()|date("Y-m-d") %}
-                    {% set end_date = loan.getEndDate()|date("Y-m-d") %}
+                    {% set loan_start = loan.getStartDate()|date("Y-m-d") %}
+                    {% set loan_end = loan.getEndDate()|date("Y-m-d") %}
 
-                    {% if start_date <= today and end_date >= today %}
-                        {% set is_available_today = false %}
-                        {% set has_valid_loan = true %}
+                    {% if loan_start <= end_date_input and loan_end >= start_date_input %}
+                        {% set is_available = false %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
 
-            {% if not has_valid_loan %}
-                {% set is_available_today = true %}
-            {% endif %}
-
-            <tr {% if not is_available_today %}class="disabled"{% endif %}>
+            <tr {% if not is_available %}class="disabled"{% endif %}>
                 <td>{{ item.name }}</td>
                 <td>
-                    {% if is_available_today %}
+                    {% if is_available %}
                         Verfügbar
                     {% else %}
                         Verliehen
@@ -82,7 +79,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <input type="checkbox" class="loan-checkbox" data-item-id="{{ item.id }}" {% if not is_available_today %}disabled{% endif %}>
+                    <input type="checkbox" class="loan-checkbox" data-item-id="{{ item.id }}" {% if not is_available %}disabled{% endif %}>
                 </td>
             </tr>
         {% endfor %}
@@ -144,13 +141,13 @@
         }
 
         // Convert the start and end dates to timestamps
-        const startTimestamp = new Date(startDate).getTime(); // Converts to timestamp in milliseconds
-        const endTimestamp = new Date(endDate).getTime(); // Converts to timestamp in milliseconds
+       // const startTimestamp = new Date(startDate).getTime(); // Converts to timestamp in milliseconds
+       // const endTimestamp = new Date(endDate).getTime(); // Converts to timestamp in milliseconds
 
         // Prepare the request body with timestamps
         const requestBody = JSON.stringify([{
-            "startDate": startTimestamp,
-            "endDate": endTimestamp,
+            "startDate": startDate,
+            "endDate": endDate,
             "items": selectedItems
         }]);
 
@@ -173,7 +170,7 @@
             });
 
             const serverResponse = await response.json();
-            console.log(serverResponse);
+            console.log("Response", serverResponse);
             document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
         } catch (e) {
             console.error(e);
