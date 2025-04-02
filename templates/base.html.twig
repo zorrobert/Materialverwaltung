@@ -107,6 +107,11 @@
         <a href="{{ path('app_page_profile') }}" class="nav-link py-3" title="Profile">
             <i class="fa fa-user fa-2x"></i>
         </a>
+        {% if app.user %}
+        <form>
+            <button id="logout" type="submit" class="btn btn-secondary mt-3" formaction="/logout">Logout</button>
+        </form>
+        {% endif %}
     </div>
 
     <div id="content" class="container d-flex flex-column">
