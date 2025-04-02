@@ -40,12 +40,29 @@ class CreateTestDataCommand extends Command
         $io->info("Creating sample users...");
         $userRepository = $this->em->getRepository(User::class);
         $users = [
+            'fredi' => [
+                'firstName' => 'Frederick',
+                'lastName' => 'Paduch',
+                'password' => 'fredi',
+                'roles' => [ 'ROLE_ADMIN' ],
+            ],
+            'mikail' => [
+                'firstName' => 'Robert',
+                'lastName' => 'Lotz',
+                'password' => 'mikail',
+                'roles' => [ 'ROLE_ADMIN' ],
+            ],
+            'oli' => [
+                'firstName' => 'Robert',
+                'lastName' => 'Lotz',
+                'password' => 'oli',
+                'roles' => [ 'ROLE_ADMIN' ],
+            ],
             'robert' => [
                 'firstName' => 'Robert',
                 'lastName' => 'Lotz',
-                'phone' => '',
                 'password' => 'robert',
-                'roles' => [ 'ROLE_ADMIN', 'ROLE_VALIDATOR' ],
+                'roles' => [ 'ROLE_ADMIN' ],
                 'birthday' => new \DateTimeImmutable('1-4-2021'),
             ],
             'testValidator' => [
@@ -66,9 +83,13 @@ class CreateTestDataCommand extends Command
             # personal data
             $user->setFirstName($properties['firstName'] ?? 'Max');
             $user->setLastName($properties['lastName'] ?? 'Mustermann');
-            $user->setBirthday($properties['birthday'] ?? new \DateTimeImmutable('now'));
+            if (array_key_exists('birthday', $properties)) {
+                $user->setBirthday($properties['birthday']); # ?? new \DateTimeImmutable('now')
+            }
             # contact data
-            $user->setPhone($properties['phone'] ?? '+49 42');
+            if (array_key_exists('phone', $properties)) {
+                $user->setPhone($properties['phone']); # ?? '+49 42'
+            }
             $user->setEmail($properties['email'] ?? 'muster@mail.de');
             # location data
             $user->setCity($properties['city'] ?? 'Musterstadt');
