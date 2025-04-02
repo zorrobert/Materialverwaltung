@@ -4,6 +4,7 @@ namespace App\Serializer\Normalizer;
 
 use App\Entity\Loan;
 use App\Entity\Item;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -55,6 +56,9 @@ class LoanNormalizer implements NormalizerInterface, DenormalizerInterface
             $bide = $itemRepository->findOneBy(['id' => $item]);
             $object->addItem($bide);
         }
+
+        $object->setStartDate(new DateTime($data['startDate']));
+        $object->setEndDate(new DateTime($data['endDate']));
 
         //$object = $this->normalizer->denormalize($data, $format);
 
