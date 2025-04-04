@@ -6,15 +6,16 @@
     {% if app.user %}
 
     <div id="material-container" class="content-container">
-    <div>
-        <p>
+        <h2 class="text-center">Materialliste</h2>
+    <div id="date-select" class="row">
+        <div id="date-box" class="col-md-5">
             <label for="startDate">Start Date:</label>
             <input id="startDate" type="date" required>
-        </p>
-        <p>
+        </div>
+        <div id="date-box" class="col-md-5">
             <label for="endDate">End Date:</label>
             <input id="endDate" type="date" required>
-        </p>
+        </div>
     </div>
     <table>
         <thead>
@@ -206,12 +207,14 @@ not logged in
 /* Styling für die Tabelle */
 table {
     width: 100%;
-    border-collapse: collapse;
     margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 thead {
-    background-color: #007bff;
+    background-color: #343a40;
     color: white;
 }
 
@@ -255,6 +258,16 @@ button:hover {
 input[type="date"], input[type="checkbox"] {
     padding: 5px;
     margin: 5px 0;
+}
+#date-select{
+    justify-content: space-evenly;    
+}
+#date-box{
+    background: rgb(182, 180, 180);
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    align-items: center;
 }
 </style>
 {% endblock %}
