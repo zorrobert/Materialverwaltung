@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page not found!{% endblock %}
+
+{% block login %}{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div style="text-align: center;">
+        <h1>Page not found</h1>
+    </div>
+    <br>
+    <p>The requested page couldn't be located. Check the URL or <a href="{{ path('app_page_home') }}">return to the homepage</a>.</p>
+</div>
+{% endblock %}

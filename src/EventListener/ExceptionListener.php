@@ -16,32 +16,20 @@ final class ExceptionListener
     #[AsEventListener(event: KernelEvents::EXCEPTION)]
     public function onKernelException(ExceptionEvent $event)
     {
-        $event->stopPropagation();
-        # see https://hantsy.github.io/symfony-rest-sample/api/ex/ for details
-        $exception = $event->getThrowable(); # get the exception object from the received event
+        $exception = $event->getThrowable();
 
-        # check if this is a custom exception from the application
-        switch (true) {
-            # User Error: code 400
-            case $exception instanceof InvalidInputException:
-            case $exception instanceof MissingInputException:
-                $response = new BackendResponse(
-                    NULL,
-                    400,
-                    NULL, # there is no data
-                    $exception->getMessage() ?? $exception # return the exception message
-                );
-                break;
-        }
-
-        # If the exception has not been caught in the case block, we return the full exception
-        if (!isset($response)) {
-            # return the exception as is
-            $response = new BackendResponse('An uncaught Kernel Exception was thrown: '.$exception);
+        if (
+            $exception instanceof InvalidInputException
+            || $exception instanceof MissingInputException
+        ) {
+            $response = new BackendResponse(
+                NULL,
+                400,
+                NULL, # there is no data
+                $exception->getMessage() ?? $exception # return the exception message
+            );
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            $event->setResponse($response);
         }
-
-        // sends the modified response object to the event
-        $event->setResponse($response);
     }
 }
