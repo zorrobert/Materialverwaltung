@@ -116,11 +116,12 @@ class CreateTestDataCommand extends Command
         # create test items
         $itemRepository = $this->em->getRepository(Item::class);
         $testItems = [
-            "testItem1" => [ "desc" => "Beschreibung testItem1", "id" => "ID1"],
-            "testItem2" => [ "desc" => "Beschreibung testItem2", "id" => "ID2"],
-            "testItem3" => [],
+            "Zelt" => [ "desc" => "Portal Camping Zelt 3-4 Personen. wasserdicht 4000mm. Höhe: 130cm, Breite: 240cm, Tiefe: 210cm"],
+            "Schlafsack" => [ "desc" => "Packbarer Schlafsack Outdoor 10-25°C. Höhe: 183cm, Breite: 80cm"],
+            "Isomatte" => [ "desc" => "Camping Isomatte Selbstaufblasend + Fußpumpe, 12cm Dicke. Höhe: 200cm,  Breite: 68cm."],
         ];
         foreach ($testItems as $name => $values) {
+
             if (empty($itemRepository->findOneBy(["name" => $name]))) {
                 $newItem = new Item();
                 $newItem->setName($name);
