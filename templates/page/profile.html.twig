@@ -32,18 +32,12 @@
                         <input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 align-content-center">
-                        <button id="change" type="button" class="btn btn-secondary mt-3">Bearbeiten</button>
-                    </div>
-                    <div class="col-md-9">
-                        <button id="save" type="submit" class="btn btn-primary mt-3">Speichern</button>
-                    </div>
-                </div>
+                
             </form>
         </div>
         <div id="orders-container" class="content-container mt-4">
             <h3 id="OrderHeader" class="text-center">Bestellungen</h3>
+            <div>Table in scrollbox anpassen, addOrder verweiß auf MaterialList, delete order implementieren</div>
             <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
             <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
             <div class="scrollbox" id="OrderBox">
@@ -104,9 +98,6 @@
             box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
             justify-content: center;
         }
-        #logoutButtop{
-            background-color: aqua;
-        }
     </style>
 {% endblock %}
 
@@ -148,21 +139,6 @@
             neueBestellung.appendChild(bestellungsStatus);
 
             document.getElementById('OrderBox').appendChild(neueBestellung);
-        });
-        document.getElementById("change").addEventListener("click", function () {
-            let inputs = document.querySelectorAll("input");
-            inputs.forEach(function (input) {
-                input.disabled = false;
-            });
-            document.getElementById("gender").disabled = false;
-            document.getElementById("save").style.display = "inline-block";
-        });
-        document.getElementById("save").addEventListener("click", function (event) {
-            let inputs = document.querySelectorAll("input");
-            inputs.forEach(function (input) {
-                input.style.pointerEvents = "none";
-            });
-            document.getElementById("save").style.display = "none";
         });
     </script>
 {% endblock %}
