@@ -118,7 +118,7 @@ class CreateTestDataCommand extends Command
         $testItems = [
             "Zelt" => [ "desc" => "Portal Camping Zelt 3-4 Personen. wasserdicht 4000mm. Höhe: 130cm, Breite: 240cm, Tiefe: 210cm"],
             "Schlafsack" => [ "desc" => "Packbarer Schlafsack Outdoor 10-25°C. Höhe: 183cm, Breite: 80cm"],
-            "Isomatte" => [ "desc" => "Camping Isomatte Selbstaufblasend + Fußpumpe, 12cm Dicke. Höhe: 200cm,  Breite: 68cm."],
+            "Isomatte" => [ "desc" => "Camping Isomatte Selbstaufblasend + Fußpumpe, 12cm Dicke. Höhe: 200cm,  Breite: 68cm"],
         ];
         foreach ($testItems as $name => $values) {
 
