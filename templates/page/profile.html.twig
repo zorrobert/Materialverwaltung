@@ -24,21 +24,19 @@
                         <label for="street">Straße:</label>
                         <input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
                         <label for="streetno">Hausnummer:</label>
-                        <input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}"
-                               disabled>
+                        <input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}" disabled>
                         <label for="residence">Wohnort:</label>
                         <input type="text" id="residence" class="form-control" value="{{ user.city }}" disabled>
                         <label for="zipcode">Postleitzahl:</label>
                         <input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
                     </div>
                 </div>
-                
             </form>
         </div>
         <div id="orders-container" class="content-container mt-4">
             <h3 id="OrderHeader" class="text-center">Bestellungen</h3>
-            <div>Table in scrollbox anpassen, addOrder verweiß auf MaterialList, delete order implementieren</div>
-            <button id="addOrder" class="btn btn-secondary mt-3">add Order</button>
+            <div>Table in scrollbox anpassen, delete order implementieren</div>
+            <a href="{{ path('app_page_material') }}" class="btn btn-secondary mt-3" id="addOrder">Add Order</a>
             <button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
             <div class="scrollbox" id="OrderBox">
                 <table>
@@ -110,35 +108,6 @@
                     checkbox.closest(".order").remove();
                 }
             });
-        });
-        document.getElementById("addOrder").addEventListener("click", function () {
-            var neueBestellung = document.createElement('div');
-            neueBestellung.className = 'order row';
-
-            var checkboxCol = document.createElement('p');
-            checkboxCol.className = 'col';
-            neueBestellung.appendChild(checkboxCol);
-
-            var checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkboxCol.appendChild(checkbox);
-
-            var bestellungsNummer = document.createElement('p');
-            bestellungsNummer.className = 'col';
-            bestellungsNummer.textContent = 'Bestellungsnummer: 12345';
-            neueBestellung.appendChild(bestellungsNummer);
-
-            var bestellungsDatum = document.createElement('p');
-            bestellungsDatum.className = 'col';
-            bestellungsDatum.textContent = 'Datum: 30.01.2025';
-            neueBestellung.appendChild(bestellungsDatum);
-
-            var bestellungsStatus = document.createElement('p');
-            bestellungsStatus.className = 'col';
-            bestellungsStatus.textContent = 'Status: In Bearbeitung';
-            neueBestellung.appendChild(bestellungsStatus);
-
-            document.getElementById('OrderBox').appendChild(neueBestellung);
         });
     </script>
 {% endblock %}
