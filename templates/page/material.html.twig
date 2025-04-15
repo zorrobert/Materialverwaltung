@@ -3,267 +3,261 @@
 {% block title %}Material{% endblock %}
 
 {% block content %}
-    {% if app.user %}
+{% if app.user %}
 
     <div id="material-container" class="content-container">
         <h2 class="text-center">Materialliste</h2>
-    <div id="date-select" class="row">
-        <div id="date-box" class="col-md-5">
-            <label for="startDate">Start Date:</label>
-            <input id="startDate" type="date" required>
-        </div>
-        <div id="date-box" class="col-md-5">
-            <label for="endDate">End Date:</label>
-            <input id="endDate" type="date" required>
-        </div>
+        <form method="get" id="dateForm">
+            <div id="date-select" class="row">
+                <div id="date-box" class="col-md-5">
+                    <label for="startDate">Start Date:</label>
+                    <input id="startDate" type="date" name="startDate"
+                        value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
+                </div>
+                <div id="date-box" class="col-md-5">
+                    <label for="endDate">End Date:</label>
+                    <input id="endDate" type="date" name="endDate" value="{{ app.request.get('endDate') }}">
+                </div>
+            </div>
+            <button type="submit">Filter</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Status</th>
+                    <th>Menge</th>
+                    <th>Verliehen von</th>
+                    <th>Verliehen bis</th>
+                    <th>Ausleihen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set start_date = app.request.get('startDate') ?: "now"|date("Y-m-d") %}
+                {% set end_date = app.request.get('endDate') ?: "now"|date("Y-m-d") %}
+
+                {% set sorted_items = items|sort((a, b) => a.name <=> b.name) %}
+
+                    {% for item in sorted_items %}
+                    {% set is_available_in_range = true %}
+                    {% set loan_conflict_found = false %}
+
+                    {% for loan in item.getLoans() %}
+                    {% if loan.getStartDate() and loan.getEndDate() and not loan_conflict_found %}
+                    {% set loan_start = loan.getStartDate()|date('Y-m-d') %}
+                    {% set loan_end = loan.getEndDate()|date('Y-m-d') %}
+
+                    {# If the loan overlaps with selected range #}
+                    {% if loan_start <= end_date and loan_end>= start_date %}
+                        {% set is_available_in_range = false %}
+                        {% set loan_conflict_found = true %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <tr {% if not is_available_in_range %}class="disabled" {% endif %}>
+                            <td>{{ item.name }}</td>
+                            <td>{{ is_available_in_range ? 'Verfügbar' : 'Verliehen' }}</td>
+                            <td>
+                                {% if item.description %}
+                                {{ item.description }}
+                                {% else %}
+                                Keine Beschreibung
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not is_available_in_range and item.getLoans() is not empty %}
+                                {{ item.getLoans()[0].getStartDate()|date("Y-m-d H:i:s") }}
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not is_available_in_range and item.getLoans() is not empty %}
+                                {{ item.getLoans()[0].getEndDate()|date("Y-m-d H:i:s") }}
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="checkbox" class="loan-checkbox" data-item-id="{{ item.id }}" {% if not
+                                    is_available_in_range %}disabled{% endif %}>
+                            </td>
+                        </tr>
+                        {% endfor %}
+            </tbody>
+        </table>
+
+
+        <button id="submit-loan">Submit</button>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Material</th>
-                <th>Status</th>
-                <th>Menge</th>
-                <th>Verliehen von</th>
-                <th>Verliehen bis</th>
-                <th>Ausleihen</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% set today = "now"|date("Y-m-d") %}
 
-            {% set sorted_items = items|sort((a, b) => a.name <=> b.name) %}
+    {% else %}
+    not logged in
+    {% endif %}
+    <script>
 
-                {% for item in sorted_items %}
-                {% set is_available_today = false %}
-                {% set has_valid_loan = false %}
+        // async function deleteLoans(loanIds) {
+        //     try {
+        //         const response = await fetch('/api/loan/delete', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(loanIds),
+        //         });
+        //
+        //         const result = await response.json();
+        //         console.log('Deletion Result:', result);
+        //     } catch (e) {
+        //         console.error('Error deleting loans:', e);
+        //     }
+        // }
 
-                {% for loan in item.getLoans() %}
-                {% if loan.getStartDate() is not null and loan.getEndDate() is not null %}
-                {% set start_date = loan.getStartDate()|date("Y-m-d") %}
-                {% set end_date = loan.getEndDate()|date("Y-m-d") %}
-
-                {% if start_date <= today and end_date>= today %}
-                    {% set is_available_today = false %}
-                    {% set has_valid_loan = true %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if not has_valid_loan %}
-                    {% set is_available_today = true %}
-                    {% endif %}
-
-                    <tr {% if not is_available_today %}class="disabled" {% endif %}>
-                        <td>{{ item.name }}</td>
-                        <td>
-                            {% if is_available_today %}
-                            Verfügbar
-                            {% else %}
-                            Verliehen
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.description %}
-                            {{ item.description }}
-                            {% else %}
-                            Keine Beschreibung
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.getLoans() is not empty %}
-                            {{ item.getLoans()[0].getStartDate()|date("Y-m-d H:i:s") }}
-                            {% else %}
-                            -
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.getLoans() is not empty %}
-                            {{ item.getLoans()[0].getEndDate()|date("Y-m-d H:i:s") }}
-                            {% else %}
-                            -
-                            {% endif %}
-                        </td>
-                        <td>
-                            <input type="checkbox" class="loan-checkbox" data-item-id="{{ item.id }}" {% if not
-                                is_available_today %}disabled{% endif %}>
-                        </td>
-                    </tr>
-                    {% endfor %}
-        </tbody>
-    </table>
+        // deleteLoans("0195f540-334b-726f-a5c2-4c455648b387");
 
 
-    <button id="submit-loan">Submit</button>
-</div>
-<script>
-
-    async function deleteLoans(loanIds) {
-        try {
-            const response = await fetch('/api/loan/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loanIds),
+        const submitButton = document.getElementById('submit-loan');
+        submitButton.addEventListener("click", async (event) => {
+            // Get the selected items (from the checked checkboxes)
+            const selectedItems = [];
+            document.querySelectorAll('.loan-checkbox:checked').forEach((checkbox) => {
+                selectedItems.push(checkbox.getAttribute('data-item-id'));
             });
 
-            const result = await response.json();
-            console.log('Deletion Result:', result);
-        } catch (e) {
-            console.error('Error deleting loans:', e);
-        }
-    }
+            if (selectedItems.length === 0) {
+                alert('Please select at least one item.');
+                return;
+            }
 
-    // Call the function to get and delete loans for testItem3 (replace with actual ID)
-    deleteLoans("0195f540-334b-726f-a5c2-4c455648b387");
+            // Get the start and end date values
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
 
-    const submitButton = document.getElementById('submit-loan');
-    submitButton.addEventListener("click", async (event) => {
-        // Get the selected items (from the checked checkboxes)
-        const selectedItems = [];
-        document.querySelectorAll('.loan-checkbox:checked').forEach((checkbox) => {
-            selectedItems.push(checkbox.getAttribute('data-item-id'));
+            // Ensure that both dates are provided
+            if (!startDate || !endDate) {
+                alert('Please fill in both start and end dates.');
+                return;
+            }
+
+            // Convert the start and end dates to timestamps
+            // const startTimestamp = new Date(startDate).getTime(); // Converts to timestamp in milliseconds
+            // const endTimestamp = new Date(endDate).getTime(); // Converts to timestamp in milliseconds
+
+            // Prepare the request body with timestamps
+            const requestBody = JSON.stringify([{
+                "startDate": startDate,
+                "endDate": endDate,
+                "items": selectedItems
+            }]);
+
+            // Send the data
+            await sendData(requestBody);
         });
 
-        if (selectedItems.length === 0) {
-            alert('Please select at least one item.');
-            return;
+        async function sendData(requestBody) {
+            console.log("Request Body:", requestBody);
+           // document.getElementById('request').innerHTML = requestBody;
+
+            try {
+                const response = await fetch("/api/loan/create", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: requestBody
+                });
+
+                const serverResponse = await response.json();
+                console.log("loan created: " , serverResponse);
+              //  document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
+            } catch (e) {
+                console.error("loan not created: " , e);
+              //  document.getElementById('response').innerHTML = JSON.stringify(e);
+            }
         }
+    </script>
+    {% endblock %}
 
-        // Get the start and end date values
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
 
-        // Ensure that both dates are provided
-        if (!startDate || !endDate) {
-            alert('Please fill in both start and end dates.');
-            return;
-        }
 
-        // Convert the start and end dates to timestamps
-        const startTimestamp = new Date(startDate).getTime(); // Converts to timestamp in milliseconds
-        const endTimestamp = new Date(endDate).getTime(); // Converts to timestamp in milliseconds
-
-        // Prepare the request body with timestamps
-        const requestBody = JSON.stringify([{
-            "startDate": startTimestamp,
-            "endDate": endTimestamp,
-            "items": selectedItems
-        }]);
-
-        // Send the data
-        await sendData(requestBody);
-    });
-
-    async function sendData(requestBody) {
-        console.log("Request Body:", requestBody);
-        document.getElementById('request').innerHTML = requestBody;
-
-        try {
-            const response = await fetch("/api/loan/create", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: requestBody
-            });
-
-            const serverResponse = await response.json();
-            console.log(serverResponse);
-            document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
-        } catch (e) {
-            console.error(e);
-            document.getElementById('response').innerHTML = JSON.stringify(e);
-        }
-    }
-</script>
-
-{% else %}
-not logged in
-{% endif %}
-
-<!-- Inline styles for the table and disabled rows -->
-<style>
-    .disabled {
-        color: rgb(118, 115, 115);
-    }
-
-    .disabled input[type="checkbox"] {
-        pointer-events: none;
-        opacity: 0.6;
-    }
-</style>
-
-{% endblock %}
-{% block stylesheets %}
+    {% block stylesheets %}
     <style>
-/* Styling für die Tabelle */
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        .disabled {
+            color: rgb(118, 115, 115);
+        }
 
-}
+        .disabled input[type="checkbox"] {
+            pointer-events: none;
+            opacity: 0.6;
+        }
 
-thead {
-    background-color: rgb(182, 180, 180);
-}
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-thead th {
-    padding: 10px;
-    text-align: left;
-}
+        }
 
-tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+        thead {
+            background-color: rgb(182, 180, 180);
+        }
 
-td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+        thead th {
+            padding: 10px;
+            text-align: left;
+        }
 
-/* Styling für Verfügbarkeit */
-.disabled {
-    background-color: #f8d7da !important;
-    color: #721c24;
-}
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-/* Styling für Buttons */
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-}
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
 
-button:hover {
-    background-color: #218838;
-}
+        .disabled {
+            background-color: #f8d7da !important;
+            color: #721c24;
+        }
 
-/* Styling für Inputs */
-input[type="date"], input[type="checkbox"] {
-    padding: 5px;
-    margin: 5px 0;
-}
-#date-select{
-    display: flex;
-    justify-content: space-evenly;
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
 
-    font-weight: bold;
-}
-#date-box{
-    background: rgb(182, 180, 180);
-    margin: 5px;
-    border-radius: 10px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-    align-items: center;
-}
-</style>
-{% endblock %}
+        button:hover {
+            background-color: #218838;
+        }
+
+        input[type="date"],
+        input[type="checkbox"] {
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        #date-select {
+            display: flex;
+            justify-content: space-evenly;
+
+            font-weight: bold;
+        }
+
+        #date-box {
+            background: rgb(182, 180, 180);
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            align-items: center;
+        }
+    </style>
+    {% endblock %}
