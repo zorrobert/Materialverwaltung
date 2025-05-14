@@ -6,12 +6,13 @@
 {% if app.user %}
 
     <div id="material-container" class="content-container">
+        <div id="banner"> Deine Ausleihe war erfolgreich!</div>
         <h2 class="text-center">Materialliste</h2>
         <form method="get" id="dateForm">
             <div id="date-select" class="row">
                 <div id="date-box" class="col-md-5">
                     <label for="startDate">Start Date:</label>
-                    <input id="startDate" type="date" name="startDate"
+                    <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
                         value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
                 </div>
                 <div id="date-box" class="col-md-5">
@@ -67,14 +68,14 @@
                             </td>
                             <td>
                                 {% if not is_available_in_range and item.getLoans() is not empty %}
-                                {{ item.getLoans()[0].getStartDate()|date("Y-m-d H:i:s") }}
+                                {{ item.getLoans()[0].getStartDate()|date("Y-m-d") }}
                                 {% else %}
                                 -
                                 {% endif %}
                             </td>
                             <td>
                                 {% if not is_available_in_range and item.getLoans() is not empty %}
-                                {{ item.getLoans()[0].getEndDate()|date("Y-m-d H:i:s") }}
+                                {{ item.getLoans()[0].getEndDate()|date("Y-m-d") }}
                                 {% else %}
                                 -
                                 {% endif %}
@@ -172,6 +173,13 @@
                 const serverResponse = await response.json();
                 console.log("loan created: " , serverResponse);
               //  document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
+                const banner  = document.getElementById('banner')
+                banner.style.display = 'block'
+                setTimeout(() => {
+                     window.location.href = "/profile"
+                }, 1500)
+              
+
             } catch (e) {
                 console.error("loan not created: " , e);
               //  document.getElementById('response').innerHTML = JSON.stringify(e);
@@ -258,6 +266,21 @@
             border-radius: 10px;
             box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
             align-items: center;
+        }
+
+        #banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #c3e6cb;
+            z-index: 9999;
         }
     </style>
     {% endblock %}
