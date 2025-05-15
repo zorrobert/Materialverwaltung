@@ -6,6 +6,12 @@
 {% block content %}
 {% if app.user %}
 <div id="banner">Ausleihe erfolgreich entfernt!</div>
+<div id="confirm">
+	<p>Möchtest du die Bestellung wirklich Löschen</p>
+	<button id="yes" class="btn btn-secondary mt-3">Ja</button>
+	<button id="no" class="btn btn-secondary mt-3">Nein</button>
+</div>
+
 <div id="profile-container" class="content-container">
 	<h2 class="text-center">Profil</h2>
 	<form id="form">
@@ -116,6 +122,21 @@
 		border-bottom: 1px solid #c3e6cb;
 		z-index: 9999;
 	}
+		#confirm {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background-color: #d4edda;
+		color: #155724;
+		padding: 15px;
+		text-align: center;
+		font-weight: bold;
+		border-bottom: 1px solid #c3e6cb;
+		z-index: 9999;
+	}
+
 </style>
 {% endblock %}
 
