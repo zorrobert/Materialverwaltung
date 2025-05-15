@@ -5,24 +5,24 @@
 {% block content %}
 {% if app.user %}
 
-    <div id="material-container" class="content-container">
-        <div id="banner"> Deine Ausleihe war erfolgreich!</div>
-        <h2 class="text-center">Materialliste</h2>
-        <form method="get" id="dateForm">
-            <div id="date-select" class="row">
-                <div id="date-box" class="col-md-5">
-                    <label for="startDate">Start Date:</label>
-                    <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
-                        value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
-                </div>
-                <div id="date-box" class="col-md-5">
-                    <label for="endDate">End Date:</label>
-                    <input id="endDate" type="date" name="endDate" value="{{ app.request.get('endDate') }}">
-                </div>
+<div id="material-container" class="content-container">
+    <div id="banner"> Deine Ausleihe war erfolgreich!</div>
+    <h2 class="text-center">Materialliste</h2>
+    <form method="get" id="dateForm">
+        <div id="date-select" class="row">
+            <div id="date-box" class="col-md-5">
+                <label for="startDate">Start Date:</label>
+                <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
+                    value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
             </div>
-            <button type="submit">Filter</button>
-        </form>
-        <div>
+            <div id="date-box" class="col-md-5">
+                <label for="endDate">End Date:</label>
+                <input id="endDate" type="date" name="endDate" value="{{ app.request.get('endDate') }}">
+            </div>
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+    <div>
         <table>
             <thead>
                 <tr>
@@ -49,7 +49,6 @@
                     {% set loan_start = loan.getStartDate()|date('Y-m-d') %}
                     {% set loan_end = loan.getEndDate()|date('Y-m-d') %}
 
-                    {# If the loan overlaps with selected range #}
                     {% if loan_start <= end_date and loan_end>= start_date %}
                         {% set is_available_in_range = false %}
                         {% set loan_conflict_found = true %}
@@ -91,200 +90,171 @@
         </table>
     </div>
 
-        <button id="submit-loan">Submit</button>
-    </div>
+    <button id="submit-loan">Submit</button>
+</div>
 
-    {% else %}
-    not logged in
-    {% endif %}
-    <script>
+{% else %}
+not logged in
+{% endif %}
+<script>
 
-        // async function deleteLoans(loanIds) {
-        //     try {
-        //         const response = await fetch('/api/loan/delete', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify(loanIds),
-        //         });
-        //
-        //         const result = await response.json();
-        //         console.log('Deletion Result:', result);
-        //     } catch (e) {
-        //         console.error('Error deleting loans:', e);
-        //     }
-        // }
+    const submitButton = document.getElementById('submit-loan');
+    submitButton.addEventListener("click", async (event) => {
 
-        // deleteLoans("0195f540-334b-726f-a5c2-4c455648b387");
-
-
-        const submitButton = document.getElementById('submit-loan');
-        submitButton.addEventListener("click", async (event) => {
-            // Get the selected items (from the checked checkboxes)
-            const selectedItems = [];
-            document.querySelectorAll('.loan-checkbox:checked').forEach((checkbox) => {
-                selectedItems.push(checkbox.getAttribute('data-item-id'));
-            });
-
-            if (selectedItems.length === 0) {
-                alert('Please select at least one item.');
-                return;
-            }
-
-            // Get the start and end date values
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-
-            // Ensure that both dates are provided
-            if (!startDate || !endDate) {
-                alert('Please fill in both start and end dates.');
-                return;
-            }
-
-            // Convert the start and end dates to timestamps
-            // const startTimestamp = new Date(startDate).getTime(); // Converts to timestamp in milliseconds
-            // const endTimestamp = new Date(endDate).getTime(); // Converts to timestamp in milliseconds
-
-            // Prepare the request body with timestamps
-            const requestBody = JSON.stringify([{
-                "startDate": startDate,
-                "endDate": endDate,
-                "items": selectedItems
-            }]);
-
-            // Send the data
-            await sendData(requestBody);
+        const selectedItems = [];
+        document.querySelectorAll('.loan-checkbox:checked').forEach((checkbox) => {
+            selectedItems.push(checkbox.getAttribute('data-item-id'));
         });
 
-        async function sendData(requestBody) {
-            console.log("Request Body:", requestBody);
-           // document.getElementById('request').innerHTML = requestBody;
-
-            try {
-                const response = await fetch("/api/loan/create", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: requestBody
-                });
-
-                const serverResponse = await response.json();
-                console.log("loan created: " , serverResponse);
-              //  document.getElementById('response').innerHTML = JSON.stringify(serverResponse);
-                const banner  = document.getElementById('banner')
-                banner.style.display = 'block'
-                setTimeout(() => {
-                     window.location.href = "/profile"
-                }, 1500)
-              
-
-            } catch (e) {
-                console.error("loan not created: " , e);
-              //  document.getElementById('response').innerHTML = JSON.stringify(e);
-            }
-        }
-    </script>
-    {% endblock %}
-
-
-
-    {% block stylesheets %}
-    <style>
-        #material-container {
-            overflow: auto;
-        }
-        .disabled {
-            color: rgb(118, 115, 115);
+        if (selectedItems.length === 0) {
+            alert('Please select at least one item.');
+            return;
         }
 
-        .disabled input[type="checkbox"] {
-            pointer-events: none;
-            opacity: 0.6;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
+        if (!startDate || !endDate) {
+            alert('Please fill in both start and end dates.');
+            return;
         }
 
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        const requestBody = JSON.stringify([{
+            "startDate": startDate,
+            "endDate": endDate,
+            "items": selectedItems
+        }]);
 
+        await sendData(requestBody);
+    });
+
+    async function sendData(requestBody) {
+        console.log("Request Body:", requestBody)
+
+        try {
+            const response = await fetch("/api/loan/create", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: requestBody
+            });
+
+            const serverResponse = await response.json();
+            console.log("loan created: ", serverResponse);
+
+            const banner = document.getElementById('banner')
+            banner.style.display = 'block'
+            setTimeout(() => {
+                window.location.href = "/profile"
+            }, 500)
+
+
+        } catch (e) {
+            console.error("loan not created: ", e);
         }
+    }
+</script>
+{% endblock %}
 
-        thead {
-            background-color: rgb(182, 180, 180);
-        }
 
-        thead th {
-            padding: 10px;
-            text-align: left;
-        }
 
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+{% block stylesheets %}
+<style>
+    #material-container {
+        overflow: auto;
+    }
 
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+    .disabled {
+        color: rgb(118, 115, 115);
+    }
 
-        .disabled {
-            background-color: #f8d7da !important;
-            color: #721c24;
-        }
+    .disabled input[type="checkbox"] {
+        pointer-events: none;
+        opacity: 0.6;
+    }
 
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-        button:hover {
-            background-color: #218838;
-        }
+    }
 
-        input[type="date"],
-        input[type="checkbox"] {
-            padding: 5px;
-            margin: 5px 0;
-        }
+    thead {
+        background-color: rgb(182, 180, 180);
+    }
 
-        #date-select {
-            display: flex;
-            justify-content: space-evenly;
+    thead th {
+        padding: 10px;
+        text-align: left;
+    }
 
-            font-weight: bold;
-        }
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-        #date-box {
-            background: rgb(182, 180, 180);
-            margin: 5px;
-            border-radius: 10px;
-            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-            align-items: center;
-        }
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
 
-        #banner {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px solid #c3e6cb;
-            z-index: 9999;
-        }
-    </style>
-    {% endblock %}
+    .disabled {
+        background-color: #f8d7da !important;
+        color: #721c24;
+    }
+
+    button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    input[type="date"],
+    input[type="checkbox"] {
+        padding: 5px;
+        margin: 5px 0;
+    }
+
+    #date-select {
+        display: flex;
+        justify-content: space-evenly;
+
+        font-weight: bold;
+    }
+
+    #date-box {
+        background: rgb(182, 180, 180);
+        margin: 5px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+        align-items: center;
+    }
+
+    #banner {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #c3e6cb;
+        z-index: 9999;
+    }
+</style>
+{% endblock %}

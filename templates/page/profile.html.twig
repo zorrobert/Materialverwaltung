@@ -4,162 +4,177 @@
 {% endblock %}
 
 {% block content %}
-	{% if app.user %}
-		<div id="profile-container" class="content-container">
-			<h2 class="text-center">Profil</h2>
-			<form id="form">
-				<div class="row">
-					<div class="col-md-6">
-						<label for="fname">Vorname:</label>
-						<input type="text" id="fname" class="form-control" value="{{ user.firstName }}" disabled>
-						<label for="lname">Nachname:</label>
-						<input type="text" id="lname" class="form-control" value="{{ user.lastName }}" disabled>
-						<label for="birthday">Geburtsdatum:</label>
-						<input type="date" id="birthday" class="form-control" value="{{ user.birthday|date('Y-m-d') }}" disabled>
-						<label for="email">Email:</label>
-						<input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
-						<label for="phonenumber">Telefonnummer:</label>
-						<input type="text" id="phonenumber" class="form-control" value="{{ user.phone }}" disabled>
-					</div>
-					<div class="col-md-6">
-						<label for="street">Straße:</label>
-						<input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
-						<label for="streetno">Hausnummer:</label>
-						<input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}" disabled>
-						<label for="residence">Wohnort:</label>
-						<input type="text" id="residence" class="form-control" value="{{ user.city }}" disabled>
-						<label for="zipcode">Postleitzahl:</label>
-						<input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div id="orders-container" class="content-container mt-4">
-			<h3 id="OrderHeader" class="text-center">Bestellungen</h3>
-			<div>Delete order javascript funktion erstellen</div>
-			<a href="{{ path('app_page_material') }}" class="btn btn-secondary mt-3" id="addOrder">Add Order</a>
-			<button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
-			<div class="scrollbox" id="OrderBox">
-				<table class="table table-bordered table-hover sticky-table">
-					<thead>
-						<tr>
-							<th class="px-3">Ausleihe</th>
-							<th class="px-3">Verliehen von:</th>
-							<th class="px-3">Verliehen bis:</th>
-							<th class="px-3">Items</th>
-							<th class="px-3"></th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for loan in app.user.getLoans() %}
-							<tr data-id="{{ loan.id }}">
-								<td class="px-3">{{ loop.index }}</td>
-								<td class="px-3">{{ loan.startDate.format('Y-m-d') }}</td>
-								<td class="px-3">{{ loan.endDate.format('Y-m-d') }}</td>
-								<td class="px-3">
-									{% for item in loan.getItems() %}
-										<p class="mb-1">{{ item.name }}</p>
-									{% endfor %}
-								</td>
-								<td>
-									<input type="checkbox" class="order-checkbox">
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+{% if app.user %}
+<div id="banner">Ausleihe erfolgreich entfernt!</div>
+<div id="profile-container" class="content-container">
+	<h2 class="text-center">Profil</h2>
+	<form id="form">
+		<div class="row">
+			<div class="col-md-6">
+				<label for="fname">Vorname:</label>
+				<input type="text" id="fname" class="form-control" value="{{ user.firstName }}" disabled>
+				<label for="lname">Nachname:</label>
+				<input type="text" id="lname" class="form-control" value="{{ user.lastName }}" disabled>
+				<label for="birthday">Geburtsdatum:</label>
+				<input type="date" id="birthday" class="form-control" value="{{ user.birthday|date('Y-m-d') }}"
+					disabled>
+				<label for="email">Email:</label>
+				<input type="email" id="email" class="form-control" value="{{ user.email }}" disabled>
+				<label for="phonenumber">Telefonnummer:</label>
+				<input type="text" id="phonenumber" class="form-control" value="{{ user.phone }}" disabled>
+			</div>
+			<div class="col-md-6">
+				<label for="street">Straße:</label>
+				<input type="text" id="street" class="form-control" value="{{ user.street }}" disabled>
+				<label for="streetno">Hausnummer:</label>
+				<input type="text" id="streetno" class="form-control" value="{{ user.streetNumber }}" disabled>
+				<label for="residence">Wohnort:</label>
+				<input type="text" id="residence" class="form-control" value="{{ user.city }}" disabled>
+				<label for="zipcode">Postleitzahl:</label>
+				<input type="text" id="zipcode" class="form-control" value="{{ user.zipcode }}" disabled>
 			</div>
 		</div>
-	{% endif %}
+	</form>
+</div>
+<div id="orders-container" class="content-container mt-4">
+	<h3 id="OrderHeader" class="text-center">Bestellungen</h3>
+	<div>Delete order javascript funktion erstellen</div>
+	<a href="{{ path('app_page_material') }}" class="btn btn-secondary mt-3" id="addOrder">Add Order</a>
+	<button id="deleteOrder" class="btn btn-secondary mt-3">delete Order</button>
+	<div class="scrollbox" id="OrderBox">
+		<table class="table table-bordered table-hover sticky-table">
+			<thead>
+				<tr>
+					<th class="px-3">Ausleihe</th>
+					<th class="px-3">Verliehen von:</th>
+					<th class="px-3">Verliehen bis:</th>
+					<th class="px-3">Items</th>
+					<th class="px-3"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for loan in app.user.getLoans() %}
+				<tr data-id="{{ loan.id }}">
+					<td class="px-3">{{ loop.index }}</td>
+					<td class="px-3">{{ loan.startDate.format('Y-m-d') }}</td>
+					<td class="px-3">{{ loan.endDate.format('Y-m-d') }}</td>
+					<td class="px-3">
+						{% for item in loan.getItems() %}
+						<p class="mb-1">{{ item.name }}</p>
+						{% endfor %}
+					</td>
+					<td>
+						{# <input type="checkbox" class="order-checkbox"> #}
+						<input type="checkbox" class="order-checkbox" data-item-id="{{ loan.id }}" </td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block stylesheets %}
-	<style>
-		.scrollbox {
-			max-height: 300px;
-			overflow-y: auto;
-			border: 1px solid #ccc;
-		}
-    /*
-		.sticky-table {
-			border-collapse: separate; 
-		}
+<style>
+	.scrollbox {
+		max-height: 300px;
+		overflow-y: auto;
+		border: 1px solid #ccc;
+	}
 
-		.sticky-table thead th {
-			position: sticky;
-			top: 0;
-			background-color: #fff;
-			z-index: 10;
-			box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-		}
-		.sticky-table th,
-		.sticky-table td {
-			padding: 10px;
-			text-align: left;
-			vertical-align: top;
-		}
-		.sticky-table tr {
-			border-bottom: 1px solid #ddd;
-		}
+	.btn-primary {
+		width: 100%;
+	}
 
-		.sticky-table tbody tr:hover {
-			background-color: #f9f9f9;
-		}
-*/
-		.btn-primary {
-			width: 100%;
-		}
-		#save {
-			display: none;
-		}
-		.order.row p {
-			text-align: center;
-			justify-items: center;
-		}
-		#OrderBox {
-			height: 250px;
-			margin: 5px;
-			padding: 10px;
-			overflow-y: scroll;
-			overflow-x: hidden;
-		}
-	</style>
+	#save {
+		display: none;
+	}
+
+	.order.row p {
+		text-align: center;
+		justify-items: center;
+	}
+
+	#OrderBox {
+		height: 250px;
+		margin: 5px;
+		padding: 10px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	#banner {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background-color: #d4edda;
+		color: #155724;
+		padding: 15px;
+		text-align: center;
+		font-weight: bold;
+		border-bottom: 1px solid #c3e6cb;
+		z-index: 9999;
+	}
+</style>
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		document.getElementById("deleteOrder").addEventListener("click", function () {
-var checkboxes = document.querySelectorAll("#OrderBox input[type='checkbox']");
-checkboxes.forEach(function (checkbox) {
-if (checkbox.checked) {
-checkbox.closest(".order").remove();
-}
-});
-});
-// document.addEventListener('DOMContentLoaded', function () {
-// const deleteButton = document.getElementById('deleteOrder');
+<script>
 
-// deleteButton.addEventListener('click', function () {
-// const checkboxes = document.querySelectorAll('.order-checkbox:checked');
 
-// if (checkboxes.length === 0) {
-// alert('Bitte wähle mindestens eine Bestellung zum Löschen aus.');
-// return;
-// }
+	const deleteButton = document.getElementById('deleteOrder');
 
-// if (!confirm('Möchtest du die ausgewählten Bestellungen wirklich löschen?')) {
-// return;
-// }
+	deleteButton.addEventListener("click", async function () {
+		const selectedItems = [];
+		document.querySelectorAll('.order-checkbox:checked').forEach((checkbox) => {
+			selectedItems.push(checkbox.getAttribute('data-item-id'));
+		});
 
-// checkboxes.forEach(checkbox => {
-// const row = checkbox.closest('tr');
-// // Optional: hier kannst du auch die ID aus row.dataset.id holen
-// row.remove(); // Entfernt die Zeile aus der Tabelle
-// });
+		if (selectedItems.length === 0) {
+			alert('Please select at least one item.');
+			return;
+		}
+		const requestBody = JSON.stringify(selectedItems);
 
-// // Optional: AJAX-Aufruf an das Backend zum Löschen
-// // Hier könntest du eine fetch()-Anfrage senden
-// });
-// });
-	</script>
+		await deleteLoans(requestBody);
+
+	});
+
+
+
+	async function deleteLoans(requestBody) {
+		console.log("Request Body:", requestBody);
+		
+		try {
+			const response = await fetch("/api/loan/delete", {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: requestBody
+			});
+
+			const serverResponse = await response.json();
+			console.log("loan deleted: ", serverResponse);
+
+			const banner = document.getElementById('banner')
+			banner.style.display = 'block'
+			setTimeout(() => {
+				window.location.href = "/profile"
+			}, 500)
+
+
+		} catch (e) {
+			console.error("loan not deleted: ", e);
+		}
+	}
+
+
+
+
+</script>
 {% endblock %}
