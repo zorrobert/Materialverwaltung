@@ -22,6 +22,7 @@
             </div>
             <button type="submit">Filter</button>
         </form>
+        <div>
         <table>
             <thead>
                 <tr>
@@ -88,7 +89,7 @@
                         {% endfor %}
             </tbody>
         </table>
-
+    </div>
 
         <button id="submit-loan">Submit</button>
     </div>
@@ -192,6 +193,9 @@
 
     {% block stylesheets %}
     <style>
+        #material-container {
+            overflow: auto;
+        }
         .disabled {
             color: rgb(118, 115, 115);
         }
