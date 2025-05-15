@@ -97,11 +97,9 @@
 	}
 
 	#OrderBox {
-		height: 250px;
 		margin: 5px;
 		padding: 10px;
-		overflow-y: scroll;
-		overflow-x: hidden;
+		overflow: auto;
 	}
 
 	#banner {
@@ -124,8 +122,10 @@
 {% block javascripts %}
 <script>
 
-
 	const deleteButton = document.getElementById('deleteOrder');
+	const confirmBox = document.getElementById("confirm");
+	const yesButton = document.getElementById('yes');
+	const noButton = document.getElementById('no');
 
 	deleteButton.addEventListener("click", async function () {
 		const selectedItems = [];
@@ -137,17 +137,26 @@
 			alert('Please select at least one item.');
 			return;
 		}
-		const requestBody = JSON.stringify(selectedItems);
 
+		confirmBox.style.display = 'block';
+
+		yesButton.onclick = async function () {
+			confirmBox.style.display = 'none';
+			const requestBody = JSON.stringify(selectedItems);
+			await deleteLoans(requestBody);
+		};
+
+		noButton.onclick = function () {
+			confirmBox.style.display = 'none';
+		};
 		await deleteLoans(requestBody);
-
 	});
 
 
 
 	async function deleteLoans(requestBody) {
 		console.log("Request Body:", requestBody);
-		
+
 		try {
 			const response = await fetch("/api/loan/delete", {
 				method: "POST",
@@ -164,7 +173,7 @@
 			const banner = document.getElementById('banner')
 			banner.style.display = 'block'
 			setTimeout(() => {
-				window.location.href = "/profile"
+				window.location.reload();
 			}, 500)
 
 
@@ -172,9 +181,6 @@
 			console.error("loan not deleted: ", e);
 		}
 	}
-
-
-
 
 </script>
 {% endblock %}

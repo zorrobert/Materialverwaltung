@@ -8,20 +8,22 @@
 <div id="material-container" class="content-container">
     <div id="banner"> Deine Ausleihe war erfolgreich!</div>
     <h2 class="text-center">Materialliste</h2>
-    <form method="get" id="dateForm">
-        <div id="date-select" class="row">
-            <div id="date-box" class="col-md-5">
-                <label for="startDate">Start Date:</label>
-                <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
-                    value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
+    <div>
+        <form method="get" id="dateForm">
+            <div id="date-select" class="row">
+                <div id="date-box" class="col-md-5">
+                    <label for="startDate" class="col-3">Start Date:</label>
+                    <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
+                        value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
+                </div>
+                <div id="date-box" class="col-md-5">
+                    <label for="endDate" class="col-3">End Date:</label>
+                    <input id="endDate" type="date" name="endDate" value="{{ app.request.get('endDate') }}">
+                </div>
             </div>
-            <div id="date-box" class="col-md-5">
-                <label for="endDate">End Date:</label>
-                <input id="endDate" type="date" name="endDate" value="{{ app.request.get('endDate') }}">
-            </div>
-        </div>
-        <button type="submit">Filter</button>
-    </form>
+            <button id="filterButton" type="submit">Filter</button>
+        </form>
+    </div>
     <div>
         <table>
             <thead>
@@ -166,6 +168,11 @@ not logged in
         overflow: auto;
     }
 
+    .text-center {
+        margin-bottom: 0;
+        padding: 3%;
+    }
+
     .disabled {
         color: rgb(118, 115, 115);
     }
@@ -217,6 +224,10 @@ not logged in
         margin-top: 15px;
     }
 
+    #filterButton {
+        background-color: cornflowerblue;
+    }
+
     button:hover {
         background-color: #218838;
     }
@@ -230,16 +241,17 @@ not logged in
     #date-select {
         display: flex;
         justify-content: space-evenly;
-
         font-weight: bold;
+        margin: 1%;
     }
 
     #date-box {
         background: rgb(182, 180, 180);
-        margin: 5px;
+        margin-bottom: 1%;
         border-radius: 10px;
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
         align-items: center;
+        display: flex;
     }
 
     #banner {
