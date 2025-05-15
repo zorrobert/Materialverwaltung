@@ -12,7 +12,7 @@
         <form method="get" id="dateForm">
             <div id="date-select" class="row">
                 <div id="date-box" class="col-md-5">
-                    <label for="startDate" class="col-3">Start Date:</label>
+                    <label for="startDate" class="col-3">Start Date: </label>
                     <input id="startDate" type="date" name="startDate" min="{{ 'now'|date('Y-m-d') }}"
                         value="{{ app.request.get('startDate') ?: 'now'|date('Y-m-d') }}">
                 </div>
@@ -100,10 +100,10 @@ not logged in
 {% endif %}
 <script>
 
-    const submitButton = document.getElementById('submit-loan');
+    var submitButton = document.getElementById('submit-loan');
     submitButton.addEventListener("click", async (event) => {
 
-        const selectedItems = [];
+        var selectedItems = [];
         document.querySelectorAll('.loan-checkbox:checked').forEach((checkbox) => {
             selectedItems.push(checkbox.getAttribute('data-item-id'));
         });
@@ -113,15 +113,15 @@ not logged in
             return;
         }
 
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
 
         if (!startDate || !endDate) {
             alert('Please fill in both start and end dates.');
             return;
         }
 
-        const requestBody = JSON.stringify([{
+        var requestBody = JSON.stringify([{
             "startDate": startDate,
             "endDate": endDate,
             "items": selectedItems
@@ -134,7 +134,7 @@ not logged in
         console.log("Request Body:", requestBody)
 
         try {
-            const response = await fetch("/api/loan/create", {
+            var response = await fetch("/api/loan/create", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,10 +143,10 @@ not logged in
                 body: requestBody
             });
 
-            const serverResponse = await response.json();
+            var serverResponse = await response.json();
             console.log("loan created: ", serverResponse);
 
-            const banner = document.getElementById('banner')
+            var banner = document.getElementById('banner')
             banner.style.display = 'block'
             setTimeout(() => {
                 window.location.href = "/profile"

@@ -22,7 +22,7 @@
 				<label for="lname">Nachname:</label>
 				<input type="text" id="lname" class="form-control" value="{{ user.lastName | default('-') }}" disabled>
 				<label for="birthday">Geburtsdatum:</label>
-				<input type="date" id="birthday" class="form-control" value="{{ user.birthday | default('-') }}"
+				<input type="text" id="birthday" class="form-control" value="{{ user.birthday | default('-') }}"
 					disabled>
 				<label for="email">Email:</label>
 				<input type="email" id="email" class="form-control" value="{{ user.email | default('-') }}" disabled>
@@ -46,7 +46,7 @@
 	<h3 id="OrderHeader" class="text-center">Bestellungen</h3>
 	<div id="buttonBox">
 		<a href="{{ path('app_page_material') }}" class="btn btn-secondary" id="addOrder">Add Order</a>
-		<button id="deleteOrder" class="btn btn-secondary">delete Order</button>
+		<button id="deleteOrder" class="btn btn-secondary" onclick="checkDelete()">Delete Order</button>
 	</div>
 	<div class="scrollbox" id="OrderBox">
 		<table class="table table-bordered table-hover sticky-table">
@@ -140,6 +140,14 @@
 
 	#addOrder {
 		margin-right: 0.5%;
+		margin-bottom: 0.5%;
+		width: 20%;
+	}
+
+	#deleteOrder {
+		margin-right: 0.5%;
+		margin-bottom: 0.5%;
+		width: 20%;
 	}
 
 	#buttonBox {
@@ -153,13 +161,12 @@
 {% block javascripts %}
 <script>
 
-	const deleteButton = document.getElementById('deleteOrder');
-	const confirmBox = document.getElementById("confirm");
-	const yesButton = document.getElementById('yes');
-	const noButton = document.getElementById('no');
+	var confirmBox = document.getElementById("confirm");
+	var yesButton = document.getElementById('yes');
+	var noButton = document.getElementById('no');
 
-	deleteButton.addEventListener("click", async function () {
-		const selectedItems = [];
+	async function checkDelete() {
+		var selectedItems = [];
 		document.querySelectorAll('.order-checkbox:checked').forEach((checkbox) => {
 			selectedItems.push(checkbox.getAttribute('data-item-id'));
 		});
@@ -173,23 +180,21 @@
 
 		yesButton.onclick = async function () {
 			confirmBox.style.display = 'none';
-			const requestBody = JSON.stringify(selectedItems);
+			var requestBody = JSON.stringify(selectedItems);
 			await deleteLoans(requestBody);
 		};
 
 		noButton.onclick = function () {
 			confirmBox.style.display = 'none';
 		};
-
-	});
-
+	}
 
 
 	async function deleteLoans(requestBody) {
 		console.log("Request Body:", requestBody);
 
 		try {
-			const response = await fetch("/api/loan/delete", {
+			var response = await fetch("/api/loan/delete", {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json',
@@ -198,10 +203,10 @@
 				body: requestBody
 			});
 
-			const serverResponse = await response.json();
+			var serverResponse = await response.json();
 			console.log("loan deleted: ", serverResponse);
 
-			const banner = document.getElementById('banner')
+			var banner = document.getElementById('banner')
 			banner.style.display = 'block'
 			setTimeout(() => {
 				window.location.reload();
