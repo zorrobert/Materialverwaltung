@@ -22,7 +22,7 @@
 				<label for="lname">Nachname:</label>
 				<input type="text" id="lname" class="form-control" value="{{ user.lastName | default('-') }}" disabled>
 				<label for="birthday">Geburtsdatum:</label>
-				<input type="text" id="birthday" class="form-control" value="{{ user.birthday | default('-') }}"
+				<input type="text" id="birthday" class="form-control" value="{{ user.birthday.format('d.m.Y') | default('-') }}"
 					disabled>
 				<label for="email">Email:</label>
 				<input type="email" id="email" class="form-control" value="{{ user.email | default('-') }}" disabled>
