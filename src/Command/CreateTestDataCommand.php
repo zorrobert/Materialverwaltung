@@ -116,9 +116,18 @@ class CreateTestDataCommand extends Command
         # create test items
         $itemRepository = $this->em->getRepository(Item::class);
         $testItems = [
-            "Zelt" => [ "desc" => "Portal Camping Zelt 3-4 Personen. wasserdicht 4000mm. Höhe: 130cm, Breite: 240cm, Tiefe: 210cm"],
-            "Schlafsack" => [ "desc" => "Packbarer Schlafsack Outdoor 10-25°C. Höhe: 183cm, Breite: 80cm"],
-            "Isomatte" => [ "desc" => "Camping Isomatte Selbstaufblasend + Fußpumpe, 12cm Dicke. Höhe: 200cm,  Breite: 68cm"],
+            "Zelt" => [
+                "desc" => "Portal Camping Zelt 3-4 Personen. wasserdicht 4000mm. Höhe: 130cm, Breite: 240cm, Tiefe: 210cm",
+                'id' => 'ID1'
+            ],
+            "Schlafsack" => [
+                "desc" => "Packbarer Schlafsack Outdoor 10-25°C. Höhe: 183cm, Breite: 80cm",
+                'id' => 'ID2'
+            ],
+            "Isomatte" => [
+                "desc" => "Camping Isomatte Selbstaufblasend + Fußpumpe, 12cm Dicke. Höhe: 200cm,  Breite: 68cm",
+                'id' => 'ID3'
+            ],
         ];
         foreach ($testItems as $name => $values) {
 
@@ -135,9 +144,10 @@ class CreateTestDataCommand extends Command
 
         # create test loans
         $testLoans = [
-            [ "items" => [$itemRepository->findOneBy(["inventoryId" => "ID1"])]],
             [ "items" => [
-                $itemRepository->findOneBy(["inventoryId" => "ID1"]),
+                $itemRepository->findOneBy(["inventoryId" => "ID1"])]],
+            [ "items" => [
+                $itemRepository->findOneBy(["inventoryId" => "ID3"]),
                 $itemRepository->findOneBy(["inventoryId" => "ID2"]),
             ]],
         ];

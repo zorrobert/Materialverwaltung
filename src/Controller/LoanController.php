@@ -67,6 +67,34 @@ class LoanController extends AbstractController
         return new BackendResponse(NULL, 200, $list);
     }
 
+    #[Route('/api/loan/cancel', name: 'app_loan_cancel')]
+    public function cancel(EntityManagerInterface $em): BackendResponse
+    {
+        $request = Request::createFromGlobals()->getContent();
+        $idList = array_filter(json_decode($request)); # filter out NULL values and empty strings
+        if (empty($idList)) {
+            throw new MissingInputException("Endpoint /loan/cancel expects an array of Loan IDs to cancel, none provided.");
+        }
+        $loanRepository = $em->getRepository(Loan::class);
+
+        foreach ($idList as $id)
+        {
+            $loan = $loanRepository->find($id);
+            if (empty($loan)) {
+                throw new MissingInputException("Could not cancel loans: Loan ".$id.' was not found.');
+            }
+            $status = $loan->getStatus();
+            switch ($status) {
+                case 'canceled':
+                    throw new MissingInputException("Could not cancel loans: Loan ".$id.' is already canceled.');
+            }
+            $loan->setStatus('canceled');
+        }
+        $em->flush();
+
+        return new BackendResponse("Successfully canceled ".sizeof($idList).' loans.', 200);
+    }
+
     #[Route('/api/loan/delete', name: 'app_loan_delete')]
     public function delete(EntityManagerInterface $em): BackendResponse
     {

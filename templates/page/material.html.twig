@@ -4,7 +4,6 @@
 
 {% block content %}
 {% if app.user %}
-
 <div id="material-container" class="content-container">
     <div id="banner"> Deine Ausleihe war erfolgreich!</div>
     <h2 class="text-center">Materialliste</h2>
@@ -94,9 +93,6 @@
 
     <button id="submit-loan">Submit</button>
 </div>
-
-{% else %}
-not logged in
 {% endif %}
 <script>
 
